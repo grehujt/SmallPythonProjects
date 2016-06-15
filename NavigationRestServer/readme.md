@@ -6,6 +6,7 @@
 - falcon, WSGI framework
 - bjoern, web server
 - requests, for http requests
+- ujson, fastest json library
 
 ### Overview
 > TODO
