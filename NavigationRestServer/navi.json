@@ -1,0 +1,8 @@
+{
+    "testSite": {
+        "floorHeight":300,
+        "edgeUrl":"https://<edges_url>",
+        "connectorUrl":"https://<connectors_url>",
+        "regionUrl":"https://<regions>"
+    },
+}
