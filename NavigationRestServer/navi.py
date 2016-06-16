@@ -9,7 +9,7 @@ import requests
 from scipy import spatial
 import graph_tool as gt
 from graph_tool.topology import shortest_path
-from graph_tool.draw import graph_draw
+# from graph_tool.draw import graph_draw
 
 import poly_math as PM
 
@@ -186,12 +186,11 @@ class SiteNavigator:
             eprop_double[e] = w
         graph.vp['loc'] = vprop_vint
         graph.ep['weight'] = eprop_double
-        graph_draw(graph, output='%s.png' %
-                   self.site, output_size=(1000, 1000))
+        # graph_draw(graph, output='%s.png' %
+        #            self.site, output_size=(1000, 1000))
         return graph, locId_loc, loc_locId
 
     def _get_polygon_ids(self, loc):
-        # print loc
         if loc in self.loc_locId:
             return self.loc_polyIds[loc]
         polys = self.areaId_polys[loc[0]]
