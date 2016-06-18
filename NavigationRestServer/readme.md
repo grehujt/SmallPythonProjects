@@ -76,11 +76,11 @@
 
 ### Project files
 
-- pics:
+- [pics](./pics):
 
     contains some images for demo
 
-- navi.json:
+- [navi.json](./navi.json):
 
     the json conf file,
 
@@ -166,10 +166,10 @@
         - areaId: the floor id
         - vertex: the vetices in **anti-clockwise** order
 
-- navi.py:
+- [navi.py](./navi.py):
 
     the main entry
 
-- poly_math.py:
+- [poly_math.py](./poly_math.py):
 
     the PIP algorithms and related classes and some helper functions
