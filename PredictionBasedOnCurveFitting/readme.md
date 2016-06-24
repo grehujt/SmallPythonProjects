@@ -122,3 +122,11 @@ _NOTE: this example is taken from **Building Machine Learning System in Python**
         ```
 
         ![output](./pics/figure_3.png)
+
+    + Moreover, if we increase the order of fitting function, our error gets smaller and smaller:
+
+        ![output](./pics/figure_4.png)
+
+    + However, if we expand our x domain, we will see that functions with higer order try so hard to fit our current dataset, as a result, they can not extrapolate beyond. This is called overfitting. On the other hand, the lower degree models seem not able to capture our dataset well, this is called underfitting.
+
+        ![output](./pics/figure_5.png)
