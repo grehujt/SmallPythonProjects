@@ -72,10 +72,9 @@ plt.legend(['d = %d' % f.order for f in fs], loc='upper left', prop={'size':10})
 
 table = plt.table(cellText=[['%.2e' % error(f, x, y) for f in fs]],
     colWidths = [0.13]*len(fs),
-    #colHeights = [0.05]*len(fs),
     rowLabels=['error'],
     colLabels=['order %d' % f.order for f in fs],
-    loc='upper right')
+    loc='upper right', zorder=100)
 table.scale(1, 1.5)
 # plt.subplots_adjust(left=0.2, bottom=0.2)
 plt.show()
