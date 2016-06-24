@@ -73,4 +73,4 @@ _NOTE: this example is taken from **Building Machine Learning System in Python**
         plt.show()
         ```
 
-        !(output)(./pics/figure_1.png)
+        ![output](./pics/figure_1.png)
