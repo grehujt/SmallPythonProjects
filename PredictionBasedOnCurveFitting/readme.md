@@ -9,8 +9,6 @@ _NOTE: this example is taken from **Building Machine Learning System in Python**
     3. data modeling
     4. models evaluation
 - Basic usages of curve fitting functions in scipy.
-    + scipy.genfromtxt _(alias for [numpy.genfromtxt](http://docs.scipy.org/doc/numpy/reference/generated/numpy.genfromtxt.html))_
-    + 
 - Basic usages of data visualization of matplotlib.
 
 ### Scenario
@@ -21,8 +19,8 @@ _NOTE: this example is taken from **Building Machine Learning System in Python**
 - We want to know in advance when our current limit will be hit (10k requests per hour).
 
 ### Step-by-step solution
-1. data cleaning
-    + load & view the data:
+1. Data cleaning.
+    + Load & view the data:
     
         ```python
         data = sp.genfromtxt('web_traffic.tsv', delimiter='\t')
@@ -42,7 +40,7 @@ _NOTE: this example is taken from **Building Machine Learning System in Python**
         >      [  9.00000000e+00   1.33500000e+03]
         >      [  1.00000000e+01   1.02500000e+03]]
     
-    + find out if we can drop the 'nan' data:
+    + Find out if we can drop the 'nan' data:
 
         ```python
         x = data[:, 0]
@@ -52,14 +50,14 @@ _NOTE: this example is taken from **Building Machine Learning System in Python**
 
         In this case, we have 8 nan out of 743 samples, we can afford to drop them.
 
-    + data clean up:
+    + Data clean up:
     
         ```python
         x = x[~sp.isnan(y)]
         y = y[~sp.isnan(y)]
         ```
 
-    + visulise the data to get a feeling:
+    + Visulise the data to get a feeling:
 
         ```python
         plt.scatter(x, y, s=10)
@@ -74,3 +72,35 @@ _NOTE: this example is taken from **Building Machine Learning System in Python**
         ```
 
         ![output](./pics/figure_1.png)
+
+2. Feature Engineering
+    In our case, 2-d data, skipped.
+
+3. Data modeling
+    + Having error function, we can compare the performance differences among models:
+    
+        ```python
+        def error(f, x, y):
+            return sp.sum(sp.power(f(x) - y, 2))
+        ```
+
+    + Let us try 1d fitting:
+    
+        ```python
+        fp1 = sp.polyfit(x, y, 1)
+        print fp1  # [   2.59619213  989.02487106]
+        f1 = sp.poly1d(fp1)
+        print type(f1)  # <class 'numpy.lib.polynomial.poly1d'>
+        print f1  # 2.596 x + 989
+        print error(f1, x, y)  # (317389767.34+0j)
+        ```
+
+    + Visualise 1d fitting:
+
+        ```python
+        fx = sp.linspace(0, x[-1], 1000)
+        plt.plot(fx, f1(fx), color='green', linewidth=4)
+        plt.legend(['d = %d' % f1.order], loc='upper left')
+        ```
+
+        ![output](./pics/figure_2.png)
