@@ -36,5 +36,16 @@ print error(f1, x, y)  # (317389767.34+0j)
 
 fx = sp.linspace(0, x[-1], 1000)
 plt.plot(fx, f1(fx), color='green', linewidth=4)
-plt.legend(['d = %d' % f1.order], loc='upper left')
+# plt.legend(['d = %d' % f1.order], loc='upper left')
+# plt.show()
+
+fp2 = sp.polyfit(x, y, 2)
+print fp2  # [  1.05322215e-02  -5.26545650e+00   1.97476082e+03]
+f2 = sp.poly1d(fp2)
+print type(f2)  # <class 'numpy.lib.polynomial.poly1d'>
+print f2  # 0.01053 x^2 - 5.265 x + 1975
+print error(f2, x, y)  # (179983507.878+0j)
+
+plt.plot(fx, f2(fx), color='red', linewidth=4)
+plt.legend(['d = %d' % f.order for f in [f1, f2]], loc='upper left')
 plt.show()
