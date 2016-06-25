@@ -141,10 +141,10 @@ _NOTE: this example is taken from **Building Machine Learning System in Python**
         ```python
         from sklearn.cross_validation import KFold
         result = {}
-        for train, test in KFold(y.shape[0], 5, True):
+        for train, test in KFold(y_lastweek.shape[0], 5, True):
             print train.shape, test.shape
-            x_train, x_test = x[train], x[test]
-            y_train, y_test = y[train], y[test]
+            x_train, x_test = x_lastweek[train], x_lastweek[test]
+            y_train, y_test = y_lastweek[train], y_lastweek[test]
             for d in [1, 2, 3, 10, 50]:
                 if d not in result:
                     result[d] = []
@@ -152,12 +152,12 @@ _NOTE: this example is taken from **Building Machine Learning System in Python**
                 result[d].append(error(f, x_test, y_test))
 
         for k, v in result.iteritems():
-            print k, np.mean(v)
+            print k, '\t'.join('%.2e' % x for x in v)
 
         ## output:
-        50 24213552.4829
-        1 64092686.7325
-        2 36371729.6778
-        3 28161378.6417
-        10 25816017.0566
+        50 6.54e+06 9.43e+06    9.03e+06    8.10e+06    7.34e+06
+        1 9.95e+06  1.58e+07    1.38e+07    1.70e+07    1.52e+07
+        2 6.51e+06  7.66e+06    6.93e+06    8.19e+06    8.27e+06
+        3 6.18e+06  7.56e+06    6.66e+06    7.96e+06    8.16e+06
+        10 5.43e+06 8.07e+06    7.18e+06    7.82e+06    7.32e+06
         ```

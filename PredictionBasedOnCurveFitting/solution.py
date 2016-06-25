@@ -111,10 +111,10 @@ table.scale(1, 1.5)
 from sklearn.cross_validation import KFold
 
 result = {}
-for train, test in KFold(y.shape[0], 5, True):
+for train, test in KFold(y_lastweek.shape[0], 5, True):
     print train.shape, test.shape
-    x_train, x_test = x[train], x[test]
-    y_train, y_test = y[train], y[test]
+    x_train, x_test = x_lastweek[train], x_lastweek[test]
+    y_train, y_test = y_lastweek[train], y_lastweek[test]
     for d in [1, 2, 3, 10, 50]:
         if d not in result:
             result[d] = []
@@ -122,4 +122,6 @@ for train, test in KFold(y.shape[0], 5, True):
         result[d].append(error(f, x_test, y_test))
 
 for k, v in result.iteritems():
-    print k, np.mean(v)
+    print k, '\t'.join('%.2e' % x for x in v)
+
+plt.close()
