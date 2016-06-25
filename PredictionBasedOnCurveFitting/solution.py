@@ -68,13 +68,58 @@ print error(f50, x, y)
 plt.plot(fx, f50(fx), linewidth=4)
 
 fs = [f1, f2, f3, f10, f50]
-plt.legend(['d = %d' % f.order for f in fs], loc='upper left', prop={'size':10})
+plt.legend(['d = %d' % f.order for f in fs], loc='upper left', prop={'size': 10})
 
 table = plt.table(cellText=[['%.2e' % error(f, x, y) for f in fs]],
-    colWidths = [0.13]*len(fs),
+    colWidths=[0.13] * len(fs),
     rowLabels=['error'],
     colLabels=['order %d' % f.order for f in fs],
     loc='upper right', zorder=100)
 table.scale(1, 1.5)
-# plt.subplots_adjust(left=0.2, bottom=0.2)
-plt.show()
+# plt.show()
+
+
+def gen_model(x, y, degree):
+    fp = np.polyfit(x, y, degree)
+    return np.poly1d(fp)
+
+plt.figure()
+plt.scatter(x, y, s=10)
+plt.title('Page views over last month')
+plt.xlabel('Time')
+plt.ylabel('PV/hour')
+# set x ticks by week count
+plt.xticks([w*7*24 for w in range(10)], ['week %d'%w for w in range(10)])
+plt.autoscale(tight=True)
+plt.grid(True, linestyle='-', color='0.75')
+plt.ylim(0, 10000)
+y_lastweek = y[x > 3*7*24]
+x_lastweek = x[x > 3*7*24]
+degrees = [1, 2, 3, 10, 50]
+fs = [gen_model(x_lastweek, y_lastweek, i) for i in degrees]
+for f in fs:
+    plt.plot(fx, f(fx), linewidth=4)
+plt.legend(['d = %d' % f.order for f in fs], loc='upper left', prop={'size': 10})
+table = plt.table(cellText=[['%.2e' % error(f, x, y) for f in fs]],
+    colWidths=[0.13] * len(fs),
+    rowLabels=['error'],
+    colLabels=['order %d' % f.order for f in fs],
+    loc='upper right', zorder=100)
+table.scale(1, 1.5)
+# plt.show()
+
+from sklearn.cross_validation import KFold
+
+result = {}
+for train, test in KFold(y.shape[0], 5, True):
+    print train.shape, test.shape
+    x_train, x_test = x[train], x[test]
+    y_train, y_test = y[train], y[test]
+    for d in [1, 2, 3, 10, 50]:
+        if d not in result:
+            result[d] = []
+        f = gen_model(x_train, y_train, d)
+        result[d].append(error(f, x_test, y_test))
+
+for k, v in result.iteritems():
+    print k, np.mean(v)

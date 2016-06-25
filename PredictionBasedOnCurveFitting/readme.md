@@ -73,7 +73,7 @@ _NOTE: this example is taken from **Building Machine Learning System in Python**
 
         ![output](./pics/figure_1.png)
 
-2. Feature Engineering
+2. Feature Engineering. 
     In our case, 2-d data, skipped.
 
 3. Data modeling
@@ -127,6 +127,37 @@ _NOTE: this example is taken from **Building Machine Learning System in Python**
 
         ![output](./pics/figure_4.png)
 
+4. Model evaluation
     + However, if we expand our x domain, we will see that functions with higer order try so hard to fit our current dataset, as a result, they can not extrapolate beyond. This is called overfitting. On the other hand, the lower degree models seem not able to capture our dataset well, this is called underfitting.
 
         ![output](./pics/figure_5.png)
+
+    + If we only use data after week 3 and train the same models, we can see the effects of overfitting more clearly:
+
+        ![output](./pics/figure_6.png)
+
+    + 5-fold validation:
+
+        ```python
+        from sklearn.cross_validation import KFold
+        result = {}
+        for train, test in KFold(y.shape[0], 5, True):
+            print train.shape, test.shape
+            x_train, x_test = x[train], x[test]
+            y_train, y_test = y[train], y[test]
+            for d in [1, 2, 3, 10, 50]:
+                if d not in result:
+                    result[d] = []
+                f = gen_model(x_train, y_train, d)
+                result[d].append(error(f, x_test, y_test))
+
+        for k, v in result.iteritems():
+            print k, np.mean(v)
+
+        ## output:
+        50 24213552.4829
+        1 64092686.7325
+        2 36371729.6778
+        3 28161378.6417
+        10 25816017.0566
+        ```
