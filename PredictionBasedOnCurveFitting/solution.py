@@ -1,6 +1,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.cross_validation import KFold
 
 data = np.genfromtxt('web_traffic.tsv', delimiter='\t')
 print data.shape
@@ -93,8 +94,8 @@ plt.xticks([w*7*24 for w in range(10)], ['week %d'%w for w in range(10)])
 plt.autoscale(tight=True)
 plt.grid(True, linestyle='-', color='0.75')
 plt.ylim(0, 10000)
-y_lastweek = y[x > 3*7*24]
-x_lastweek = x[x > 3*7*24]
+y_lastweek = y[x > 3.5*7*24]
+x_lastweek = x[x > 3.5*7*24]
 degrees = [1, 2, 3, 10, 50]
 fs = [gen_model(x_lastweek, y_lastweek, i) for i in degrees]
 for f in fs:
@@ -108,11 +109,10 @@ table = plt.table(cellText=[['%.2e' % error(f, x, y) for f in fs]],
 table.scale(1, 1.5)
 # plt.show()
 
-from sklearn.cross_validation import KFold
 
 result = {}
-for train, test in KFold(y_lastweek.shape[0], 5, True):
-    print train.shape, test.shape
+for train, test in KFold(y_lastweek.shape[0], 5):
+    # print train.shape, test.shape
     x_train, x_test = x_lastweek[train], x_lastweek[test]
     y_train, y_test = y_lastweek[train], y_lastweek[test]
     for d in [1, 2, 3, 10, 50]:
@@ -122,6 +122,18 @@ for train, test in KFold(y_lastweek.shape[0], 5, True):
         result[d].append(error(f, x_test, y_test))
 
 for k, v in result.iteritems():
-    print k, '\t'.join('%.2e' % x for x in v)
+    print k, '\t'.join('%.2e' % x for x in v), '\t%.2e' % np.mean(v)
 
-plt.close()
+
+from scipy.optimize import fsolve
+bestF = gen_model(x_lastweek, y_lastweek, 2) - 10000
+roots = fsolve(bestF, x0=800) / (7.0 * 24)
+print roots  # [ 5.0628393]
+
+plt.figure()
+plt.xticks([w*7*24 for w in range(10)], ['week %d'%w for w in range(10)])
+plt.autoscale(tight=True)
+plt.grid(True, linestyle='-', color='0.75')
+plt.ylim(0, 10000)
+plt.plot(fx, bestF(fx), linewidth=4)
+plt.show()

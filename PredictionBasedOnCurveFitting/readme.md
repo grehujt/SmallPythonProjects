@@ -150,14 +150,40 @@ _NOTE: this example is taken from **Building Machine Learning System in Python**
                     result[d] = []
                 f = gen_model(x_train, y_train, d)
                 result[d].append(error(f, x_test, y_test))
-
         for k, v in result.iteritems():
-            print k, '\t'.join('%.2e' % x for x in v)
+            print k, '\t'.join('%.2e' % x for x in v), '\t%.2e' % np.mean(v)
 
         ## output:
-        50 6.54e+06 9.43e+06    9.03e+06    8.10e+06    7.34e+06
-        1 9.95e+06  1.58e+07    1.38e+07    1.70e+07    1.52e+07
-        2 6.51e+06  7.66e+06    6.93e+06    8.19e+06    8.27e+06
-        3 6.18e+06  7.56e+06    6.66e+06    7.96e+06    8.16e+06
-        10 5.43e+06 8.07e+06    7.18e+06    7.82e+06    7.32e+06
+        50 5.18e+06 4.94e+06    3.78e+06    4.00e+06    1.62e+07    6.83e+06
+        1 5.21e+06  5.41e+06    5.79e+06    4.71e+06    6.41e+06    5.51e+06
+        2 5.00e+06  4.46e+06    4.41e+06    3.36e+06    5.19e+06    4.48e+06
+        3 4.95e+06  4.53e+06    4.32e+06    3.79e+06    5.09e+06    4.54e+06
+        10 4.55e+06 4.77e+06    3.83e+06    3.93e+06    9.73e+06    5.36e+06
         ```
+
+### Conclusion
+
+Clearly that degree 2 model has least mean error in the cross validation, we can make our 10k prediction by finding the root from the polynomial substracting 10k:
+
+```python
+def gen_model(x, y, degree):
+    fp = np.polyfit(x, y, degree)
+    return np.poly1d(fp)
+
+from scipy.optimize import fsolve
+bestF = gen_model(x_lastweek, y_lastweek, 2) - 10000
+roots = fsolve(bestF, x0=800) / (7.0 * 24)
+print roots  # [ 5.0628393]
+
+plt.figure()
+plt.xticks([w*7*24 for w in range(10)], ['week %d'%w for w in range(10)])
+plt.autoscale(tight=True)
+plt.grid(True, linestyle='-', color='0.75')
+plt.ylim(0, 10000)
+plt.plot(fx, bestF(fx), linewidth=4)
+plt.show()
+```
+
+![output](./pics/figure_7.png)
+
+Finally, we can predict that in week 5, we are going to reach 10k hits per hour.
