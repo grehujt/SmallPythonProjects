@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cross_validation import KFold
+from scipy.optimize import fsolve
 
 data = np.genfromtxt('web_traffic.tsv', delimiter='\t')
 print data.shape
@@ -125,7 +126,6 @@ for k, v in result.iteritems():
     print k, '\t'.join('%.2e' % x for x in v), '\t%.2e' % np.mean(v)
 
 
-from scipy.optimize import fsolve
 bestF = gen_model(x_lastweek, y_lastweek, 2) - 10000
 roots = fsolve(bestF, x0=800) / (7.0 * 24)
 print roots  # [ 5.0628393]

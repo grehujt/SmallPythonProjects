@@ -187,3 +187,5 @@ plt.show()
 ![output](./pics/figure_7.png)
 
 Finally, we can predict that in week 5, we are going to reach 10k hits per hour.
+
+[complete solution.py](./solution.py)
