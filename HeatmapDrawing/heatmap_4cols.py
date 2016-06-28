@@ -8,9 +8,6 @@ import matplotlib.mlab as ml
 import pylab as pl
 from pylab import imread
 
-import pandas as pd
-
-
 projectFolder = r'./data'
 imFile = '%s/bg.png' % projectFolder
 dataFile = '%s/data.csv' % projectFolder
