@@ -76,11 +76,11 @@
 
 ### Project files
 
-- pics:
+- [pics](./pics):
 
     contains some images for demo
 
-- navi.json:
+- [navi.json](./navi.json):
 
     the json conf file,
 
@@ -95,12 +95,81 @@
     }
     ```
 
-    TODO
+    + floorHeight: the average height of floor, which is used to calculate the total distance in multi-floor navigation.
+    
+    + edgeUrl
+    
+        points to a restful server that provides data like:
 
-- navi.py:
+        ```json
+        [
+            {
+                "fromArea": 1000,
+                "_id": 1,
+                "toPt": "[3045, 2261]",
+                "toRegion": 75,
+                "fromRegion": 69,
+                "toArea": 1002,
+                "fromPt": "[3050, 2247]"
+            },
+            ...
+        ]
+        ```
+
+        - fromArea: the source floor id
+        - \_id: the edge id
+        - toPt: the destination location, [x, y]
+        - toRegion: the destination polygon id
+        - fromRegion: the source polygon id
+        - toArea: the destination floor id
+        - fromPt: the source location, [x, y]
+
+    + connectorUrl
+    
+        points to a restful server that provides data like:
+
+        ```json
+        [
+            {
+                "regions": "[0, 2]",
+                "pts": "[878, 1159]",
+                "_id": 1,
+                "areaId": 1000
+            },
+            ...
+        ]
+        ```
+
+        - regions: which polygons are connected by this connector
+        - pts: the connector location
+        - \_id: the connector id
+        - areaId: the floor id
+
+    + regionUrl
+
+        the source of convex polygons, points to a restful server that provides data like:
+
+        ```json
+        [
+            {
+                "polyId": 1,
+                "_id": 1,
+                "areaId": 1000,
+                "vertex": "[768, 1144, 770, 1210, 799, 1209, 803, 1152]"
+            },
+            ...
+        ]
+        ```
+
+        - polyId: the polygon id, which is unique per floor
+        - \_id: the (internal) polygon id, which is unique per site
+        - areaId: the floor id
+        - vertex: the vetices in **anti-clockwise** order
+
+- [navi.py](./navi.py):
 
     the main entry
 
-- poly_math.py:
+- [poly_math.py](./poly_math.py):
 
     the PIP algorithms and related classes and some helper functions
