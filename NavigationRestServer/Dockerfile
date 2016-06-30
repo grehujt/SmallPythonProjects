@@ -8,4 +8,4 @@ RUN mv graph-tool.list /etc/apt/sources.list.d && \
     apt-get update && apt-get install -y --force-yes libev-dev python-pip python-graph-tool && \
     pip install -r requirements.txt
 EXPOSE 80
-CMD ["python", "/usr/src/app/navigator.py"]
+CMD ["python", "/usr/src/app/navi.py"]
