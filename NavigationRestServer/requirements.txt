@@ -1,0 +1,5 @@
+numpy
+scipy
+ujson
+falcon
+bjoern

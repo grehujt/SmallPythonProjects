@@ -1,21 +1,28 @@
 
-
 import os
 import cPickle as pickle
 import ujson as json
 from itertools import groupby, combinations
-
 import requests
 from scipy import spatial
 import graph_tool as gt
 from graph_tool.topology import shortest_path
-# from graph_tool.draw import graph_draw
+from graph_tool.draw import graph_draw
+import falcon
+import bjoern
 
 import poly_math as PM
+
+bindIp = '0.0.0.0'
+bindPort = 80
+reusePort = True
+dataFolder = './naviData'
 
 
 class NavigaorMgr:
     def __init__(self, conf):
+        if not os.path.exists(dataFolder):
+            os.mkdir(dataFolder)
         self._clear()
         self._load(conf)
 
@@ -284,12 +291,8 @@ class NaviWithLocResource:
             resp.body = "{}"
 
 if __name__ == '__main__':
-    import sys
-    import falcon
-    import bjoern
     navMgr = NavigaorMgr('nav.json')
-    port = int(sys.argv[1])
-    print 'navi server start at port', port
+    print 'navi server start at port', bindPort
     app = falcon.API()
-    app.add_route('/test_loc', NaviWithLocResource())  # src,dst
-    bjoern.run(app, '0.0.0.0', port, reuse_port=True)
+    app.add_route('/query_path', NaviWithLocResource())  # src,dst
+    bjoern.run(app, bindIp, bindPort, reuse_port=reusePort)
