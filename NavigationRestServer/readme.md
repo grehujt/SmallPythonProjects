@@ -168,8 +168,24 @@
 
 - [navi.py](./navi.py):
 
-    the main entry
+    contains the main functions of navigator
 
 - [poly_math.py](./poly_math.py):
 
     the PIP algorithms and related classes and some helper functions
+
+- [Dockerfile](./Dockerfile):
+
+    dockerfile to build the base image
+
+- [graph-tool.list](./graph-tool.list):
+
+    apt source file for graph-tool
+
+- [init.sh](./init.sh):
+
+    script to build the image and init the container
+
+- [requirements.txt](./requirements.txt):
+
+    pip requirements file
