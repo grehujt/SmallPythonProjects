@@ -34,19 +34,21 @@ for i1, i2 in combinations(range(features.shape[1]), 2):
 featureNames = ['area', 'perimeter', 'compactness', 'length of kernel', 'width of kernel', 'asymmetry coefficient', 'length of kernel groove']
 
 
-def plot_2d_knn_decision(featureIndices, features, labels, num_neighbors=1):
+def plot_2d_knn_decision(featureIndices, features, labels, num_neighbors=1, norm=False):
     '''
     this function is taken from:
     https://github.com/grehujt/BuildingMachineLearningSystemsWithPython/blob/master/ch02/figure4_5_sklearn.py
     '''
-    # f1 = features[:, featureIndices[0]]
-    # f2 = features[:, featureIndices[1]]
-    # x0, x1 = f1.min() * .9, f1.max() * 1.1
-    # y0, y1 = f2.min() * .9, f2.max() * 1.1
-    f1 = preprocessing.scale(features[:, featureIndices[0]])
-    f2 = preprocessing.scale(features[:, featureIndices[1]])
-    x0, x1 = f1.min() * 1.1, f1.max() * 1.1
-    y0, y1 = f2.min() * 1.1, f2.max() * 1.1
+    if norm:
+        f1 = preprocessing.scale(features[:, featureIndices[0]])
+        f2 = preprocessing.scale(features[:, featureIndices[1]])
+        x0, x1 = f1.min() * 1.1, f1.max() * 1.1
+        y0, y1 = f2.min() * 1.1, f2.max() * 1.1
+    else:
+        f1 = features[:, featureIndices[0]]
+        f2 = features[:, featureIndices[1]]
+        x0, x1 = f1.min() * .9, f1.max() * 1.1
+        y0, y1 = f2.min() * .9, f2.max() * 1.1
 
     X = np.linspace(x0, x1, 1000)  # shape: (1000,)
     Y = np.linspace(y0, y1, 1000)  # shape: (1000,)
@@ -74,14 +76,14 @@ def plot_2d_knn_decision(featureIndices, features, labels, num_neighbors=1):
 
     return fig, ax
 
-# fig, ax = plot_2d_knn_decision([3, 6], features, labels, 1)
-# fig.savefig('./pics/figure1.png')
+fig, ax = plot_2d_knn_decision([3, 6], features, labels, 1, False)
+fig.savefig('./pics/figure1.png')
 
-# fig, ax = plot_2d_knn_decision([0, 2], features, labels, 1)
-# fig.savefig('./pics/figure2.png')
+fig, ax = plot_2d_knn_decision([0, 2], features, labels, 1, False)
+fig.savefig('./pics/figure2.png')
 
-fig, ax = plot_2d_knn_decision([3, 6], features, labels, 1)
+fig, ax = plot_2d_knn_decision([3, 6], features, labels, 1, True)
 fig.savefig('./pics/figure1.1.png')
 
-fig, ax = plot_2d_knn_decision([0, 2], features, labels, 1)
+fig, ax = plot_2d_knn_decision([0, 2], features, labels, 1, True)
 fig.savefig('./pics/figure2.1.png')
