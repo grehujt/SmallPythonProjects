@@ -5,6 +5,9 @@ from sklearn.cross_validation import KFold
 from itertools import combinations
 from matplotlib.colors import ListedColormap
 import matplotlib.pyplot as plt
+# from sklearn.pipeline import Pipeline
+# from sklearn.preprocessing import StandardScaler
+from sklearn import preprocessing
 
 data = np.genfromtxt('seeds_dataset.txt')
 features, labels = data[:, 0:7], data[:, -1]
@@ -36,15 +39,25 @@ def plot_2d_knn_decision(featureIndices, features, labels, num_neighbors=1):
     this function is taken from:
     https://github.com/grehujt/BuildingMachineLearningSystemsWithPython/blob/master/ch02/figure4_5_sklearn.py
     '''
-    features2 = features[:, (featureIndices[0], featureIndices[1])]
-    x0, x1 = features2[:, 0].min() * .9, features2[:, 0].max() * 1.1
-    y0, y1 = features2[:, 1].min() * .9, features2[:, 1].max() * 1.1
+    # f1 = features[:, featureIndices[0]]
+    # f2 = features[:, featureIndices[1]]
+    # x0, x1 = f1.min() * .9, f1.max() * 1.1
+    # y0, y1 = f2.min() * .9, f2.max() * 1.1
+    f1 = preprocessing.scale(features[:, featureIndices[0]])
+    f2 = preprocessing.scale(features[:, featureIndices[1]])
+    x0, x1 = f1.min() * 1.1, f1.max() * 1.1
+    y0, y1 = f2.min() * 1.1, f2.max() * 1.1
+
     X = np.linspace(x0, x1, 1000)  # shape: (1000,)
     Y = np.linspace(y0, y1, 1000)  # shape: (1000,)
     X, Y = np.meshgrid(X, Y)  # X.shape: (1000, 1000), Y.shape: (1000, 1000)
 
     model = KNeighborsClassifier(num_neighbors)
-    model.fit(features2, labels)
+    # model = Pipeline([
+    #     ('norm', StandardScaler()),
+    #     ('knn', model)
+    # ])
+    model.fit(np.vstack((f1, f2)).T, labels)
     C = model.predict(np.vstack([X.ravel(), Y.ravel()]).T).reshape(X.shape)
     cmap = ListedColormap([(1., .7, .7), (.7, 1., .7), (.7, .7, 1.)])
 
@@ -57,12 +70,18 @@ def plot_2d_knn_decision(featureIndices, features, labels, num_neighbors=1):
 
     cmap = ListedColormap([(1., .0, .0), (.1, .6, .1), (.0, .0, 1.)])
     # c=labels, use labels to color data points, mapping to cmap
-    ax.scatter(features2[:, 0], features2[:, 1], c=labels, cmap=cmap)
+    ax.scatter(f1, f2, c=labels, cmap=cmap)
 
     return fig, ax
 
+# fig, ax = plot_2d_knn_decision([3, 6], features, labels, 1)
+# fig.savefig('./pics/figure1.png')
+
+# fig, ax = plot_2d_knn_decision([0, 2], features, labels, 1)
+# fig.savefig('./pics/figure2.png')
+
 fig, ax = plot_2d_knn_decision([3, 6], features, labels, 1)
-fig.savefig('./pics/figure1.png')
+fig.savefig('./pics/figure1.1.png')
 
 fig, ax = plot_2d_knn_decision([0, 2], features, labels, 1)
-fig.savefig('./pics/figure2.png')
+fig.savefig('./pics/figure2.1.png')
