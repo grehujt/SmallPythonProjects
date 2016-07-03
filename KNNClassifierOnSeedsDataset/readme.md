@@ -138,8 +138,9 @@
         return fig, ax
 
     # visualise the decision boundary for feature 3 & 6
-    fig, ax = plot_2d_knn_decision([3, 6], features, labels, 1)
+    fig, ax = plot_2d_knn_decision([3, 6], features, labels, 1, False)
     # 3 fold cross validation mean error: 0.924114331723
+    fig.suptitle('k = 1 on feature 3 & 6')
     fig.savefig('./pics/figure1.png')
     ```
 
@@ -148,8 +149,9 @@
     + Let's try feature 0 & 2:
 
     ```python
-    fig, ax = plot_2d_knn_decision([0, 2], features, labels, 1)
+    fig, ax = plot_2d_knn_decision([0, 2], features, labels, 1, False)
     # 3 fold cross validation mean error: 0.794082125604
+    fig.suptitle('k = 1 on feature 0 & 2')
     fig.savefig('./pics/figure2.png')
     ```
 
@@ -203,10 +205,12 @@
 
     fig, ax = plot_2d_knn_decision([3, 6], features, labels, 1, True)
     # 3 fold cross validation mean error: 0.933574879227
+    fig.suptitle('k = 1 on feature 3 & 6 with norm')
     fig.savefig('./pics/figure1.1.png')
 
     fig, ax = plot_2d_knn_decision([0, 2], features, labels, 1, True)
     # 3 fold cross validation mean error: 0.785628019324
+    fig.suptitle('k = 1 on feature 0 & 2 wth norm')
     fig.savefig('./pics/figure2.1.png')
     ```
 
@@ -219,14 +223,17 @@
     ```python
     fig, ax = plot_2d_knn_decision([3, 6], features, labels, 5, True)
     # 3 fold cross validation mean error: 0.928341384863
+    fig.suptitle('k = 5 on feature 3 & 6 with norm')
     fig.savefig('./pics/figure3.1.png')
 
     fig, ax = plot_2d_knn_decision([3, 6], features, labels, 10, True)
     # 3 fold cross validation mean error: 0.938204508857
+    fig.suptitle('k = 10 on feature 3 & 6 with norm')
     fig.savefig('./pics/figure3.2.png')
 
     fig, ax = plot_2d_knn_decision([3, 6], features, labels, 20, True)
     # 3 fold cross validation mean error: 0.895933977456
+    fig.suptitle('k = 20 on feature 3 & 6 with norm')
     fig.savefig('./pics/figure4.1.png')
     ```
 
