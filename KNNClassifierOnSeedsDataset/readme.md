@@ -28,13 +28,17 @@
 - Notes on feature engineering: 
 
     > Principle: A simple algorithm on well-chosen features will perform better than a fancy algorithm on not-so-good features.
+    > 
     > Look at the compactness feature, it is derived from other features.
+    > 
     > The goals of a good feature are to simultaneously vary with what matters (the desired output) and be invariant with what does not.
+    > 
     > Feature selection is used to select good features automatically.
     
 - Notes on knn classifier:
 
     > If k==1, when new target comes in, the classifier find the nearest one in the training data then return its label as the result.
+    > 
     > Else, the K nearest ones vote then return the voting result, which makes the classifier more robust to outliers or mislabeled data.
 
 - Protocol of classifiers in sklearn:
@@ -109,8 +113,8 @@
         https://github.com/grehujt/BuildingMachineLearningSystemsWithPython/blob/master/ch02/figure4_5_sklearn.py
         '''
         features2 = features[:, (featureIndices[0], featureIndices[1])]
-        y0, y1 = features2[:, 0].min() * .9, features2[:, 0].max() * 1.1
-        x0, x1 = features2[:, 1].min() * .9, features2[:, 1].max() * 1.1
+        x0, x1 = features2[:, 0].min() * .9, features2[:, 0].max() * 1.1
+        y0, y1 = features2[:, 1].min() * .9, features2[:, 1].max() * 1.1
         X = np.linspace(x0, x1, 1000)  # shape: (1000,)
         Y = np.linspace(y0, y1, 1000)  # shape: (1000,)
         X, Y = np.meshgrid(X, Y)  # X.shape: (1000, 1000), Y.shape: (1000, 1000)
@@ -130,6 +134,7 @@
         cmap = ListedColormap([(1., .0, .0), (.1, .6, .1), (.0, .0, 1.)])
         # c=labels, use labels to color data points, mapping to cmap
         ax.scatter(features2[:, 0], features2[:, 1], c=labels, cmap=cmap)
+
         return fig, ax
 
     # visualise the decision boundary for feature 3 & 6
@@ -140,5 +145,12 @@
     ![png](./pics/figure1.png)
 
     + Let's try feature 0 & 2:
+
+    ```python
+    fig, ax = plot_2d_knn_decision([0, 2], features, labels, 1)
+    fig.savefig('./pics/figure2.png')
+    ```
+
+    ![png](./pics/figure2.png)
 
 
