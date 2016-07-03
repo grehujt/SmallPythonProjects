@@ -139,6 +139,7 @@
 
     # visualise the decision boundary for feature 3 & 6
     fig, ax = plot_2d_knn_decision([3, 6], features, labels, 1)
+    # 3 fold cross validation mean error: 0.924114331723
     fig.savefig('./pics/figure1.png')
     ```
 
@@ -148,6 +149,7 @@
 
     ```python
     fig, ax = plot_2d_knn_decision([0, 2], features, labels, 1)
+    # 3 fold cross validation mean error: 0.794082125604
     fig.savefig('./pics/figure2.png')
     ```
 
@@ -181,7 +183,8 @@
         #     ('norm', StandardScaler()),
         #     ('knn', model)
         # ])
-        model.fit(np.vstack((f1, f2)).T, labels)
+        fs = np.vstack((f1, f2)).T
+        model.fit(fs, labels)
         C = model.predict(np.vstack([X.ravel(), Y.ravel()]).T).reshape(X.shape)
         cmap = ListedColormap([(1., .7, .7), (.7, 1., .7), (.7, .7, 1.)])
 
@@ -195,10 +198,42 @@
         cmap = ListedColormap([(1., .0, .0), (.1, .6, .1), (.0, .0, 1.)])
         # c=labels, use labels to color data points, mapping to cmap
         ax.scatter(f1, f2, c=labels, cmap=cmap)
-
+        print '3 fold cross validation mean error:', cross_val_score(model, fs, labels).mean()
         return fig, ax
+
+    fig, ax = plot_2d_knn_decision([3, 6], features, labels, 1, True)
+    # 3 fold cross validation mean error: 0.933574879227
+    fig.savefig('./pics/figure1.1.png')
+
+    fig, ax = plot_2d_knn_decision([0, 2], features, labels, 1, True)
+    # 3 fold cross validation mean error: 0.785628019324
+    fig.savefig('./pics/figure2.1.png')
     ```
 
     ![png](./pics/figure1.1.png)
 
     ![png](./pics/figure2.1.png)
+
+    + When we increase k, let's try k=5,10,20 on feature 3 & 6:
+
+    ```python
+    fig, ax = plot_2d_knn_decision([3, 6], features, labels, 5, True)
+    # 3 fold cross validation mean error: 0.928341384863
+    fig.savefig('./pics/figure3.1.png')
+
+    fig, ax = plot_2d_knn_decision([3, 6], features, labels, 10, True)
+    # 3 fold cross validation mean error: 0.938204508857
+    fig.savefig('./pics/figure3.2.png')
+
+    fig, ax = plot_2d_knn_decision([3, 6], features, labels, 20, True)
+    # 3 fold cross validation mean error: 0.895933977456
+    fig.savefig('./pics/figure4.1.png')
+    ```
+
+    ![png](./pics/figure3.1.png)
+
+    ![png](./pics/figure3.2.png)
+
+    ![png](./pics/figure4.1.png)
+
+[full py](./solution.py)
