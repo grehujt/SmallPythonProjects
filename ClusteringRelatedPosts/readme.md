@@ -70,3 +70,52 @@
      [0 1]
      [1 0]]
     ```
+
+    + Toy dataset:
+    
+    | Post # | Content |
+    |:---:|---|
+    | 0 | This is a toy post about machine learning. Actually, it contains not much interesting stuff. |
+    | 1 | Imaging databases can get huge. |
+    | 2 | Most imaging databases save images permanently. |
+    | 3 | Imaging databases store images. |
+    | 4 | Imaging databases store images. Imaging databases store images. Imaging databases store images. |
+
+    ```python
+    corpus = [
+        "This is a toy post about machine learning. Actually, it contains not much interesting stuff.",
+        "Imaging databases can get huge.",
+        "Most imaging databases save images permanently.",
+        "Imaging databases store images.",
+        "Imaging databases store images. Imaging databases store images. Imaging databases store images."
+    ]
+    X_train = vectorizer.fit_transform(corpus)
+    print vectorizer.get_feature_names()
+    print X_train.toarray().T
+    # output:
+    [u'about', u'actually', u'can', u'contains', u'databases', u'get', u'huge', u'images', u'imaging', u'interesting', u'is', u'it', u'learning', u'machine', u'most', u'much', u'not', u'permanently', u'post', u'save', u'store', u'stuff', u'this', u'toy']
+    [[1 0 0 0 0]
+     [1 0 0 0 0]
+     [0 1 0 0 0]
+     [1 0 0 0 0]
+     [0 1 1 1 3]
+     [0 1 0 0 0]
+     [0 1 0 0 0]
+     [0 0 1 1 3]
+     [0 1 1 1 3]
+     [1 0 0 0 0]
+     [1 0 0 0 0]
+     [1 0 0 0 0]
+     [1 0 0 0 0]
+     [1 0 0 0 0]
+     [0 0 1 0 0]
+     [1 0 0 0 0]
+     [1 0 0 0 0]
+     [0 0 1 0 0]
+     [1 0 0 0 0]
+     [0 0 1 0 0]
+     [0 0 0 1 3]
+     [1 0 0 0 0]
+     [1 0 0 0 0]
+     [1 0 0 0 0]]
+    ```
