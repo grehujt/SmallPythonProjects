@@ -376,4 +376,4 @@
         plt.clf()
         ```
 
-        ![png]('./pics/figure2.png')
+        ![png](./pics/figure2.png)
