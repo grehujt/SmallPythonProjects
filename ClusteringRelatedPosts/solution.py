@@ -1,6 +1,6 @@
 
 import scipy as sp
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 import nltk.stem
 
 stemmer = nltk.stem.SnowballStemmer('english')
@@ -8,12 +8,19 @@ stemmer = nltk.stem.SnowballStemmer('english')
 
 class StemmedCountVectorizer(CountVectorizer):
     def build_analyzer(self):
-        analyzer = super(StemmedCountVectorizer, self).build_analyzer()
+        analyzer = super(CountVectorizer, self).build_analyzer()
+        return lambda doc: (stemmer.stem(w) for w in analyzer(doc))
+
+
+class StemmedTfidfVectorizer(TfidfVectorizer):
+    def build_analyzer(self):
+        analyzer = super(StemmedTfidfVectorizer, self).build_analyzer()
         return lambda doc: (stemmer.stem(w) for w in analyzer(doc))
 
 # vectorizer = CountVectorizer()
 # vectorizer = CountVectorizer(stop_words='english')
-vectorizer = StemmedCountVectorizer(stop_words='english')
+# vectorizer = StemmedCountVectorizer(stop_words='english')
+vectorizer = StemmedTfidfVectorizer(stop_words='english')
 print vectorizer
 
 content = ["How to format my hard disk", " Hard disk format problems "]
@@ -75,3 +82,16 @@ print stemmer.stem("image")  # imag
 print stemmer.stem("images")  # imag
 print stemmer.stem("imaging")  # imag
 print stemmer.stem("imagination")  # imagin
+
+
+def tfidf(word, post, corpus):
+    tf = post.count(word) * 1.0 / len(post)
+    numPosts = len([p for p in corpus if word in p])
+    idf = sp.log2(len(corpus) * 1.0 / numPosts)
+    return tf * idf
+
+a, abb, abc = ['a'], ['a', 'b', 'b'], ['a', 'b', 'c']
+corpus = [a, abb, abc]
+print tfidf('a', a, corpus)
+print tfidf('b', abb, corpus)
+print tfidf('c', abc, corpus)

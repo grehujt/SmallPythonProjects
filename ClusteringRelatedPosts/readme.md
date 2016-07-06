@@ -251,3 +251,63 @@
     4 0.517638090205
     most related 3 0.517638090205
     ```
+
+    + What we have been doing so far are based on an implicit assumption, the more occurrences of a word, the more important it is in our similarity context. This is not always true, words that occur in all posts are undoubtedly carry less information than words that only occur in some posts. We can not just weight the importance of word by counting, the number of posts with that word should also be taken into account, that's what we called [TF/IDF](https://en.wikipedia.org/wiki/Tf–idf):
+
+    ```python
+    def tfidf(word, post, corpus):
+        tf = post.count(word) * 1.0 / len(post)
+        numPosts = len([p for p in corpus if word in p])
+        idf = sp.log2(len(corpus) * 1.0 / numPosts)
+        return tf * idf
+
+    a, abb, abc = ['a'], ['a', 'b', 'b'], ['a', 'b', 'c']
+    corpus = [a, abb, abc]
+    print tfidf('a', a, corpus)  # 0.0
+    print tfidf('b', abb, corpus)  # 0.389975000481
+    print tfidf('c', abc, corpus)  # 0.528320833574
+    ```
+
+    + Apply TF/IDF to our previous code with stemmer:
+
+    ```python
+    from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+
+    class StemmedTfidfVectorizer(TfidfVectorizer):
+        def build_analyzer(self):
+            analyzer = super(StemmedTfidfVectorizer, self).build_analyzer()
+            return lambda doc: (stemmer.stem(w) for w in analyzer(doc))
+
+    # vectorizer = CountVectorizer()
+    # vectorizer = CountVectorizer(stop_words='english')
+    # vectorizer = StemmedCountVectorizer(stop_words='english')
+    vectorizer = StemmedTfidfVectorizer(stop_words='english')
+    ...
+    # output for last similarities comparison:
+    0 1.41421356237
+    1 0.86816970529
+    2 0.859044512133
+    3 0.634205801304
+    4 0.634205801304
+    most related 3 0.634205801304
+    ```
+
+    + Achievements so far
+        * tokenizing
+        * normalizing
+        * stop word filtering
+        * stemming
+        * TF/IDF weighting
+
+    + Major drawbacks so far
+        * ignores word relations, e.g. "A hates B" and "B hates A" have the same feature vector.
+        * fails to caputure negations, e.g. "I have money" and "I have no money" have similar feature vector.
+        * fails to misspelled words clearly.
+        * But it is good enough to move on to clustering;)
+
+    + Clustering
+        * [Flat clustering](http://nlp.stanford.edu/IR-book/html/htmledition/flat-clustering-1.html)
+        * [hierarchical clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering)
+        * [overview of clustering algorithms in sklearn](http://scikit-learn.org/dev/modules/clustering.html)
+        * Basic K-means clustering example:
+
