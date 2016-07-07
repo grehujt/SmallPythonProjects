@@ -346,7 +346,6 @@
             plt.xlim(0, 1)
             plt.ylim(0, 1)
 
-        i = 1
         plot(x, y, 'vectors')
         plt.savefig('./pics/figure1.png')
         plt.clf()
@@ -357,23 +356,64 @@
         * Visualize the boundary and centers after 1st iteration:
 
         ```python
-        i += 1
+        def plot_kmean_iter(i):
+            km = KMeans(init='random', n_clusters=numClusters, verbose=1,
+                        n_init=1, max_iter=i,
+                        random_state=seed)
+            km.fit(features)
+            plot(x, y, 'iter %d' % i, km)
+            mx, my = sp.meshgrid(sp.arange(0, 1, 0.001), sp.arange(0, 1, 0.001))
+            Z = km.predict(sp.vstack((mx.ravel(), my.ravel())).T).reshape(mx.shape)
+            plt.imshow(Z, interpolation='nearest',
+                         extent=(mx.min(), mx.max(), my.min(), my.max()),
+                         cmap=plt.cm.Blues,
+                         aspect='auto', origin='lower')
+            plt.scatter(km.cluster_centers_[:, 0], km.cluster_centers_[:, 1],
+                          marker='x', linewidth=2, s=100, color='black')
+            return km.cluster_centers_
+
         features = sp.vstack((x, y)).T
-        km = KMeans(init='random', n_clusters=numClusters, verbose=1,
-                    n_init=1, max_iter=1,
-                    random_state=seed)
-        km.fit(features)
-        plot(x, y, 'iter 1', km)
-        mx, my = sp.meshgrid(sp.arange(0, 1, 0.001), sp.arange(0, 1, 0.001))
-        Z = km.predict(sp.vstack((mx.ravel(), my.ravel())).T).reshape(mx.shape)
-        plt.imshow(Z, interpolation='nearest',
-                     extent=(mx.min(), mx.max(), my.min(), my.max()),
-                     cmap=plt.cm.Blues,
-                     aspect='auto', origin='lower')
-        plt.scatter(km.cluster_centers_[:, 0], km.cluster_centers_[:, 1],
-                      marker='x', linewidth=2, s=100, color='black')
+
+        centers1 = plot_kmean_iter(1)
         plt.savefig('./pics/figure2.png')
         plt.clf()
         ```
 
         ![png](./pics/figure2.png)
+
+        * Let's try more iterations and see how the centers change:
+
+        ```python
+        def plot_arrow(centers1, centers2):
+            for i in range(centers1.shape[0]):
+                x1, y1 = centers1[i, :]
+                x2, y2 = centers2[i, :]
+                plt.arrow(x1, y1, x2 - x1, y2 - y1, length_includes_head=True, head_width=.01, lw=2)
+
+        centers2 = plot_kmean_iter(2)
+        plot_arrow(centers1, centers2)
+        plt.savefig('./pics/figure3.png')
+        plt.clf()
+
+        centers3 = plot_kmean_iter(3)
+        plot_arrow(centers2, centers3)
+        plt.savefig('./pics/figure4.png')
+        plt.clf()
+
+        centers3 = plot_kmean_iter(10)
+        plt.savefig('./pics/figure5.png')
+        plt.clf()
+        # although we set 10 iterations here, the centers get converged at iteration 4
+        ```
+
+        ![png](./pics/figure3.png)
+
+        ![png](./pics/figure4.png)
+
+        ![png](./pics/figure5.png)
+
+    + Real world example, as we get new weapons, let's get our hands dirty to apply those techniques to real world example, [the 20newsgroup dataset](http://qwone.com/~jason/20Newsgroups/). We can download it from [here](http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz).
+
+>     The 20 Newsgroups data set is a collection of approximately 20,000 newsgroup documents, partitioned (nearly) evenly across 20 different newsgroups. To the best of my knowledge, it was originally collected by Ken Lang, probably for his Newsweeder: Learning to filter netnews paper, though he does not explicitly mention this collection. The 20 newsgroups collection has become a popular data set for experiments in text applications of machine learning techniques, such as text classification and text clustering.
+
+
