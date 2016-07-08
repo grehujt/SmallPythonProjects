@@ -1,8 +1,8 @@
 # Clustering Related Posts
 
 ## Scenario
-- We are implementing a search engine,
-- When a user comes in and type in some keywords, how can we find the related posts in our training data?
+- We are implementing a stackoverflow-like search engine,
+- When a user comes in and type in a question, how can we find the related posts in our training data?
 
 ## Analysis
 - Notes on [supervised learning](https://en.wikipedia.org/wiki/Supervised_learning) and [unsupervised learning](https://en.wikipedia.org/wiki/Unsupervised_learning).
@@ -414,6 +414,210 @@
 
     + Real world example, as we get new weapons, let's get our hands dirty to apply those techniques to real world example, [the 20newsgroup dataset](http://qwone.com/~jason/20Newsgroups/). We can download it from [here](http://qwone.com/~jason/20Newsgroups/20news-bydate.tar.gz).
 
->     The 20 Newsgroups data set is a collection of approximately 20,000 newsgroup documents, partitioned (nearly) evenly across 20 different newsgroups. To the best of my knowledge, it was originally collected by Ken Lang, probably for his Newsweeder: Learning to filter netnews paper, though he does not explicitly mention this collection. The 20 newsgroups collection has become a popular data set for experiments in text applications of machine learning techniques, such as text classification and text clustering.
+        _The 20 Newsgroups data set is a collection of approximately 20,000 newsgroup documents, partitioned (nearly) evenly across 20 different  newsgroups. To the best of my knowledge, it was originally collected  by Ken Lang, probably for his Newsweeder: Learning to filter netnews paper, though he does not explicitly mention this collection. The 20 newsgroups collection has become a popular data set for experiments in text applications of machine learning techniques, such as text classification and text clustering._
+
+        ```python
+        import os
+        from itertools import count
+        import scipy as sp
+        from sklearn.feature_extraction.text import TfidfVectorizer
+        import nltk.stem
+        from sklearn.cluster import KMeans
+
+        stemmer = nltk.stem.SnowballStemmer('english')
 
 
+        class StemmedTfidfVectorizer(TfidfVectorizer):
+            def build_analyzer(self):
+                analyzer = super(StemmedTfidfVectorizer, self).build_analyzer()
+                return lambda doc: (stemmer.stem(w) for w in analyzer(doc))
+
+        # assume uncompressed the dataset under data folder
+        trainDir = './data/20news-bydate-train'
+        testDir = './data/20news-bydate-test'
+
+        # filter some topics to speedup the process, just for illustration purpose
+        groups = set(['comp.graphics', 'comp.os.ms-windows.misc', 'comp.sys.ibm.pc.hardware', 'comp.sys.mac.hardware', 'comp.windows.x', 'sci.space'])
+
+
+        def load_20_news_groups(d):
+            data = []
+            target_names = []
+            filenames = []
+            for parent, folder, files in os.walk(d):
+                target_name = os.path.split(parent)[-1]
+                if target_name not in groups:
+                    continue
+                for f in files:
+                    fullFileName = os.path.join(parent, f)
+                    data.append(open(fullFileName).read())
+                    target_names.append(target_name)
+                    filenames.append(fullFileName)
+            return {'data': data, 'target_names': target_names, 'filenames': filenames}
+
+        trainData = load_20_news_groups(trainDir)
+        print len(trainData['filenames'])  # 3529
+        testData = load_20_news_groups(testDir)
+        print len(testData['filenames'])  # 4713
+
+        # ignore decode_error or you will get errors, it is real world dirty data
+        vectorizer = StemmedTfidfVectorizer(min_df=10, max_df=0.5, stop_words='english', decode_error='ignore')
+        trainMat = vectorizer.fit_transform(trainData['data'])
+        print trainMat.shape  # (3529, 4713)
+
+        numClusters = 50
+        # fix random_state for reproducing the same result
+        # verbose=1 to output internal stats
+        km = KMeans(n_clusters=numClusters, n_init=1, verbose=1, random_state=3)
+        km.fit(trainMat)
+        # Initialization complete
+        # Iteration  0, inertia 5712.205
+        # Iteration  1, inertia 3177.684
+        # Iteration  2, inertia 3143.802
+        # Iteration  3, inertia 3126.457
+        # Iteration  4, inertia 3118.120
+        # Iteration  5, inertia 3112.724
+        # Iteration  6, inertia 3109.045
+        # Iteration  7, inertia 3107.433
+        # Iteration  8, inertia 3106.019
+        # Iteration  9, inertia 3104.404
+        # Iteration 10, inertia 3103.578
+        # Iteration 11, inertia 3103.142
+        # Iteration 12, inertia 3102.692
+        # Iteration 13, inertia 3101.949
+        # Iteration 14, inertia 3101.598
+        # Iteration 15, inertia 3101.299
+        # Iteration 16, inertia 3100.663
+        # Iteration 17, inertia 3100.291
+        # Iteration 18, inertia 3100.173
+        # Iteration 19, inertia 3100.120
+        # Converged at iteration 19
+
+        newPost = '''
+        "Disk drive problems.
+            Hi, I have a problem with my hard disk. After 1 year it is working only sporadically now.
+            I tried to format it, but now it doesn't boot any more.
+            Any ideas? Thanks."
+        '''
+
+        newPostVec = vectorizer.transform([newPost])
+        newPostLabel = km.predict(newPostVec)[0]
+        print newPostLabel  # 12
+        candidateIndices = (km.labels_ == newPostLabel).nonzero()[0]
+        print len(candidateIndices)  # 117
+        dists = sp.zeros_like(candidateIndices, dtype=sp.float32)
+        for i, idx in enumerate(candidateIndices):
+            dists[i] = sp.linalg.norm((newPostVec - trainMat[idx, :]).toarray())
+        sortedIndices = sp.argsort(dists)
+
+        print trainData['data'][candidateIndices[sortedIndices[0]]]
+        print '-' * 30
+
+        print trainData['data'][candidateIndices[sortedIndices[20]]]
+        print '-' * 30
+
+        print trainData['data'][candidateIndices[sortedIndices[50]]]
+        print '-' * 30
+        ```
+
+        **top 1st similar post**:
+
+        > From: Thomas Dachsel <GERTHD@mvs.sas.com>
+        > Subject: BOOT PROBLEM with IDE controller
+        > Nntp-Posting-Host: sdcmvs.mvs.sas.com
+        > Organization: SAS Institute Inc.
+        > Lines: 25
+        > 
+        > Hi,
+        > I've got a Multi I/O card (IDE controller + serial/parallel
+        > interface) and two floppy drives (5 1/4, 3 1/2) and a
+        > Quantum ProDrive 80AT connected to it.
+        > I was able to format the hard disk, but I could not boot from
+        > it. I can boot from drive A: (which disk drive does not matter)
+        > but if I remove the disk from drive A and press the reset switch,
+        > the LED of drive A: continues to glow, and the hard disk is
+        > not accessed at all.
+        > I guess this must be a problem of either the Multi I/o card
+        > or floppy disk drive settings (jumper configuration?)
+        > Does someone have any hint what could be the reason for it.
+        > Please reply by email to GERTHD@MVS.SAS.COM
+        > Thanks,
+        > Thomas
+        > +-------------------------------------------------------------------+
+        > | Thomas Dachsel                                                    |
+        > | Internet: GERTHD@MVS.SAS.COM                                      |
+        > | Fidonet:  Thomas_Dachsel@camel.fido.de (2:247/40)                 |
+        > | Subnet:   dachsel@rnivh.rni.sub.org (UUCP in Germany, now active) |
+        > | Phone:    +49 6221 4150 (work), +49 6203 12274 (home)             |
+        > | Fax:      +49 6221 415101                                         |
+        > | Snail:    SAS Institute GmbH, P.O.Box 105307, D-W-6900 Heidelberg |
+        > | Tagline:  One bad sector can ruin a whole day...                  |
+        > +-------------------------------------------------------------------+
+
+        **top 20th similar post**:
+
+        > From: ah301@yfn.ysu.edu (Jerry Sy)
+        > Subject: how to boot from ext HD on power on ?
+        > Organization: St. Elizabeth Hospital, Youngstown, OH
+        > Lines: 12
+        > Reply-To: ah301@yfn.ysu.edu (Jerry Sy)
+        > NNTP-Posting-Host: yfn.ysu.edu
+        > 
+        > 
+        > I have an external hard drive I wish to use as startup disk.
+        > problem is, when I switch on the mac, it boots on the internal HD,
+        > but when I restart  (warm boot) the mac, it boots from the external.
+        > how do I make  it boot directly from the external ?
+        > 
+        > please email replies if possible.
+        > 
+        > thanks in advance.
+        > 
+        > jerry
+        > 
+
+        **top 50th similar post**:
+
+        > From: ehung@ampex.com (Eric Hung)
+        > Subject: Re: HELP! Installing second IDE drive
+        > Nntp-Posting-Host: dct3
+        > Organization: Ampex Corporation, Redwood City CA
+        > Lines: 37
+        > 
+        > >
+        > >>Another possibility is that the 85MB one is already partitioned into
+        > >>two seperate drives, C and D, and the CMOS asks for "C: drive" and "D:
+        > >>drive" setup info rather than "drive 1" and "drive 2" like most others
+        > >>I've seen.  Could this be confusing things?
+        > >
+        > >>So, I need HELP!  The drive came bereft of any docs, except for some
+        > >>info for the CMOS setup; the controller has a little piece of paper
+        > >>about the size of an index card; I cannibalized the cable (it's one
+        > >>of those with a connector at each end and the one in the middle, so
+        > >>it looks like a serial connection); now I be lost!
+        > >
+        > >>Many, many thanks in advance!  This is practically an emergency (I have
+        > >>two papers to do on this thing for Monday!)!  Help!
+        > >>-- 
+        > >>-----------------------
+        > >>William Barnes         SURAnet Operations
+        > >>wbarnes@sura.net       (301) 982-4600 voice  (301) 982-4605 fax
+        > >>Disclaimer:  I don't speak for SURAnet and they don't speak for me.
+        > >I've been told by our local computer guru that you can't do this unless you 
+        > >perform a low level format on your existing hard drive and set your system 
+        > >up for two hard drives from the beginning.  I took him at his word, and I 
+        > >have not tried to find out any more about it, because I'm not going to back 
+        > >everything up just to add another HDD.  If anyone knows for sure what the 
+        > >scoop is, I would like to know also.  Thanks in advance also.
+        > >
+        > >Bill Willis
+        > >
+        > 
+        > 
+        > If you bought your IDE drive from a dealer, you shouldn 't have to 
+        > perform a low level format. Even if the 1st HD is already partitioned
+        > into C and D, FDISK will automatically assign the 2 nd HD to D and 
+        > change the 2nd partition of 1st drive to E.
+        > 
+        > Check the jumper settings and CMOS setup, in particular the correct
+        > number of cylinders and tracks
