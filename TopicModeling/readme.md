@@ -88,6 +88,8 @@ We have 2246 documents from the Associated Press, and we are going to investigat
 
 - Extract top 10 hottest topics:
 
+    (Note that LDA employs some randomized algorithms, as a result you will see different topic ids.)
+
     ```python
     topics = matutils.corpus2dense(model[corpus], num_terms=model.num_topics)
     weight = topics.sum(1)
@@ -145,3 +147,18 @@ We have 2246 documents from the Associated Press, and we are going to investigat
     Result:
 
     > Demolitions experts disarmed three powerful homemade bombs at a New Jersey Turnpike rest area and arrested a man for possession of explosives, police said. Lt. Barry Roberson, a state police spokesman, said the bombs and some leftover explosive materials were discovered in the car of a man attempting to flee a trooper Tuesday morning. Trooper Robert Cieplinsky told his superiors he had noticed the man acting suspiciously near a parked car at turnpike rest area less than 10 miles west of New York City, Roberson said. Cieplinsky stopped the car and noticed a black gym bag filled with gunpowder canisters and small pellets, which Roberson described as objects used to make homemade bombs. The trooper discovered the three bombs in the trunk of the car, Roberson said, and arrested the man for possession of an explosive device. Roberson declined to give the man's name and said an investigation was continuing. Cieplinsky closed off a portion of the rest area and called for assistance from the state police bomb and explosives investigative team, who used a water cannon to saturate the devices and render them inoperable, Roberson said. In Tokyo, a Foreign Ministry official, speaking on condition of anonymity, said the ministry had received information through the Japanese Embassy in Washington that the man detained in New Jersey for possession of explosives was carrying a Japanese passport. He said the ministry would seek more details about the man and provide information to U.S. investigators, but declined to give further details. Japan's Kyodo News Service reported that Japanese authorities believe the man held in the United States may have a forged passport or may have obtained it illegally. Kyodo said Japanese investigators would ask the United States to send the fingerprints of the man detained for identification.
+
+- Further, use Hierarchical Dirichlet Process (HDP) to set the num of topics automatically:
+    + [wiki](https://en.wikipedia.org/wiki/Hierarchical_Dirichlet_process)
+    + [paper](http://jmlr.csail.mit.edu/proceedings/papers/v15/wang11a/wang11a.pdf)
+
+    ```python
+    corpora.MmCorpus.serialize('./data/ap.mm', corpus)
+    mm = corpora.mmcorpus.MmCorpus('./data/ap.mm')
+    hdp = models.hdpmodel.HdpModel(corpus, corpus.id2word)
+    print type(hdp)
+    print dir(hdp)
+    # output:
+    <class 'gensim.models.hdpmodel.HdpModel'>
+    ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__getitem__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_adapt_by_suffix', '_apply', '_load_specials', '_save_specials', '_smart_save', 'chunksize', 'corpus', 'doc_e_step', 'evaluate_test_corpus', 'hdp_to_lda', 'id2word', 'inference', 'lda_alpha', 'lda_beta', 'load', 'm_D', 'm_Elogbeta', 'm_K', 'm_T', 'm_W', 'm_alpha', 'm_eta', 'm_gamma', 'm_kappa', 'm_lambda', 'm_lambda_sum', 'm_num_docs_processed', 'm_r', 'm_rhot', 'm_scale', 'm_status_up_to_date', 'm_tau', 'm_timestamp', 'm_updatect', 'm_var_converge', 'm_var_sticks', 'm_varphi_ss', 'max_chunks', 'max_time', 'optimal_ordering', 'outputdir', 'print_topics', 'save', 'save_options', 'save_topics', 'show_topics', 'update', 'update_chunk', 'update_expectations', 'update_finished', 'update_lambda']
+    ``

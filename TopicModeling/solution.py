@@ -58,3 +58,11 @@ print
 print
 print
 print rawtext[mostSimDocIdx]
+
+
+corpora.MmCorpus.serialize('./data/ap.mm', corpus)
+mm = corpora.mmcorpus.MmCorpus('./data/ap.mm')
+hdp = models.hdpmodel.HdpModel(corpus, corpus.id2word)
+print type(hdp)
+print dir(hdp)
+
