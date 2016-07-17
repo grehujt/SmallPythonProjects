@@ -40,3 +40,21 @@ print h
 for i in xrange(-1, -11, -1):
     words = model.show_topic(tIdices[i])
     print '|', tIdices[i], '|', ' '.join(s[0] for s in sorted(words, key=lambda d: d[1], reverse=True)), '|'
+
+from scipy.spatial import distance
+# calculate pairwise distance between topic vectors
+pdists = distance.squareform(distance.pdist(topics))
+# excluding self
+largest = pdists.max()
+for i in xrange(pdists.shape[0]):
+    pdists[i][i] = largest + 1
+
+import re
+rawtext = re.findall(r'(?s)<TEXT>(.*?)</TEXT>', open('./data/ap.txt').read())
+testDocIdx = 1
+mostSimDocIdx = pdists[testDocIdx].argmin()
+print rawtext[testDocIdx]
+print
+print
+print
+print rawtext[mostSimDocIdx]
