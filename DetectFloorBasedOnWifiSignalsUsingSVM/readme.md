@@ -7,8 +7,8 @@ Given enough wifi signals (vectors) of a mall with multiple floors, implement an
 ## input format
 
 - file structure
-    + traning data: ./data/testMall/<floorId>/train_ref.txt
-    + test data: ./data/testMall/<floorId>/test_tar.txt
+    + traning data: ./data/testMall/\<floorId\>/train_ref.txt
+    + test data: ./data/testMall/\<floorId\>/test_tar.txt
 - format
     one survey point per line, in each line:
     x,y ApMac:rssi ApMac:rssi ..
