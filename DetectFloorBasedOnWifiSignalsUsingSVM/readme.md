@@ -2,7 +2,7 @@
 
 ## Scenario
 
-Given enough wifi signals (vectors) of a mall with multiple floors, implement an algorithm to determine floor when a new wifi signals (vectors) comes.
+Given enough wifi signals (vectors) from multi-floor of a mall, implement an algorithm to determine floor when a new wifi signals (vectors) comes.
 
 ## input format
 
