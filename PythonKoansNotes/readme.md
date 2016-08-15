@@ -162,6 +162,7 @@ def test_calling_functions_with_wrong_number_of_arguments(self):
         # Note, watch out for parenthesis. They need slashes in front!
         self.assertMatch(r'my_global_function\(\) takes exactly 2 arguments \(3 given\)', e[0])
 
+# ------------------------------------------------------------------
 
 def method_with_var_args(self, *args):
     return args
@@ -171,6 +172,7 @@ def test_calling_with_variable_arguments(self):
     self.assertEqual(('one', ), self.method_with_var_args('one'))
     self.assertEqual(('one', 'two'), self.method_with_var_args('one', 'two'))
 
+# ------------------------------------------------------------------
 
 def test_pass_does_nothing_at_all(self):
     "You"
@@ -179,6 +181,7 @@ def test_pass_does_nothing_at_all(self):
     pass
     self.assertEqual(True, "Still got to this line" != None)
 
+# ------------------------------------------------------------------
 
 def method_with_documentation(self):
     "A string placed at the beginning of a function is used for documentation"
@@ -187,6 +190,7 @@ def method_with_documentation(self):
 def test_the_documentation_can_be_viewed_with_the_doc_method(self):
     self.assertMatch("A string placed at the beginning of a function is used for documentation", self.method_with_documentation.__doc__)
 
+# ------------------------------------------------------------------
 
 class Dog(object):
     def name(self):
@@ -238,6 +242,7 @@ def test_set_have_arithmetic_operators(self):
     self.assertEqual(set(['MacLeod', 'Wallace']), scotsmen & warriors)
     self.assertEqual(set(['Willie', 'Leonidas']), scotsmen ^ warriors)
 
+# ------------------------------------------------------------------
 
 def test_we_can_compare_subsets(self):
     self.assertEqual(True, set('cake') <= set('cherry cake'))
@@ -259,6 +264,7 @@ def test_exceptions_inherit_from_exception(self):
     self.assertEqual('Exception', mro[3].__name__)
     self.assertEqual('BaseException', mro[4].__name__)
 
+# ------------------------------------------------------------------
 
 def test_try_clause(self):
     result = None
@@ -277,6 +283,7 @@ def test_try_clause(self):
 
     self.assertEqual('Oops', ex[0])
 
+# ------------------------------------------------------------------
 
 def test_raising_a_specific_error(self):
     result = None
@@ -300,6 +307,8 @@ def test_generator_expressions_are_a_one_shot_deal(self):
 
     self.assertEqual(['Boom!'] * 3, list(attempt1))
     self.assertEqual([], list(attempt2))
+
+# ------------------------------------------------------------------
 
 def generator_with_coroutine(self):
     result = yield
@@ -326,3 +335,128 @@ def test_before_sending_a_value_to_a_generator_next_must_be_called(self):
         self.assertMatch("can't send non-None value to a just-started generator", ex[0])
 ```
 
+## Classes
+
+```python
+class Dog(object):
+    "Dogs need regular walkies. Never, ever let them drive."
+
+def test_instances_of_classes_can_be_created_adding_parentheses(self):
+    fido = self.Dog()
+    self.assertEqual('Dog', fido.__class__.__name__)
+
+def test_classes_have_docstrings(self):
+    self.assertMatch('Dogs need regular walkies. Never, ever let them drive.', self.Dog.__doc__)
+
+# ------------------------------------------------------------------
+
+def test_you_can_also_access_the_value_out_using_getattr_and_dict(self):
+    fido = self.Dog2()
+    fido.set_name("Fido")
+
+    self.assertEqual('Fido', getattr(fido, "_name"))
+    # getattr(), setattr() and delattr() are a way of accessing attributes
+    # by method rather than through assignment operators
+
+    self.assertEqual('Fido', fido.__dict__["_name"])
+    # Yes, this works here, but don't rely on the __dict__ object! Some
+    # class implementations use optimization which result in __dict__ not
+    # showing everything.
+
+# ------------------------------------------------------------------
+
+class Dog5(object):
+    def __init__(self, initial_name):
+        self._name = initial_name
+
+    @property
+    def name(self):
+        return self._name
+
+def test_init_provides_initial_values_for_instance_variables(self):
+    fido = self.Dog5("Fido")
+    self.assertEqual('Fido', fido.name)
+
+def test_args_must_match_init(self):
+    self.assertRaises(TypeError, self.Dog5)  # Evaluates self.Dog5()
+
+    # THINK ABOUT IT:
+    # Why is this so?
+
+# ------------------------------------------------------------------
+
+def test_all_objects_support_str_and_repr(self):
+    seq = [1, 2, 3]
+
+    self.assertEqual('[1, 2, 3]', str(seq))
+    self.assertEqual('[1, 2, 3]', repr(seq))
+
+    self.assertEqual("STRING", str("STRING"))
+    self.assertEqual("'STRING'", repr("STRING"))
+```
+
+
+## New style class
+
+```python
+class OldStyleClass:
+        "An old style class"
+        # Original class style have been phased out in Python 3.
+
+    class NewStyleClass(object):
+        "A new style class"
+        # Introduced in Python 2.2
+        #
+        # Aside from this set of tests, Python Koans sticks exclusively to this
+        # kind of class
+        pass
+
+    def test_new_style_classes_inherit_from_object_base_class(self):
+        self.assertEqual(True, issubclass(self.NewStyleClass, object))
+        self.assertEqual(False, issubclass(self.OldStyleClass, object))
+
+    def test_new_style_classes_have_more_attributes(self):
+        self.assertEqual(2, len(dir(self.OldStyleClass)))
+        self.assertEqual("An old style class", self.OldStyleClass.__doc__)
+        self.assertEqual('koans.about_new_style_classes', self.OldStyleClass.__module__)
+
+        self.assertEqual(18, len(dir(self.NewStyleClass)))
+        # To examine the available attributes, run
+        # 'dir(<Class name goes here>)'
+        # from a python console
+        # ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__']
+
+    # ------------------------------------------------------------------
+
+    def test_old_style_classes_have_type_but_no_class_attribute(self):
+        self.assertEqual('classobj', type(self.OldStyleClass).__name__)
+
+        try:
+            cls = self.OldStyleClass.__class__.__name__
+        except Exception as ex:
+            pass
+
+        # What was that error message from the exception?
+        self.assertMatch("class OldStyleClass has no attribute '__class__'", ex[0])
+
+    def test_new_style_classes_have_same_class_as_type(self):
+        new_style = self.NewStyleClass()
+        self.assertEqual(type, self.NewStyleClass.__class__)
+        self.assertEqual(
+            True,
+            type(self.NewStyleClass) == self.NewStyleClass.__class__)
+        # print self.NewStyleClass.__class__ == type  # True
+        # print type(self.NewStyleClass) == type  # True
+
+    # ------------------------------------------------------------------
+
+    def test_in_old_style_instances_class_is_different_to_type(self):
+        old_style = self.OldStyleClass()
+        self.assertEqual('OldStyleClass', old_style.__class__.__name__)
+        self.assertEqual('instance', type(old_style).__name__)
+
+    def test_new_style_instances_have_same_class_as_type(self):
+        new_style = self.NewStyleClass()
+        self.assertEqual('NewStyleClass', new_style.__class__.__name__)
+        self.assertEqual(True, type(new_style) == new_style.__class__)
+```
