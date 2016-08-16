@@ -460,3 +460,243 @@ class OldStyleClass:
         self.assertEqual('NewStyleClass', new_style.__class__.__name__)
         self.assertEqual(True, type(new_style) == new_style.__class__)
 ```
+
+## With statments
+
+```python
+def count_lines(self, file_name):
+    try:
+        f = open(file_name)
+        try:
+            return len(f.readlines())
+        finally:
+            f.close()
+    except IOError:
+        # should never happen
+        self.fail()
+
+def test_counting_lines(self):
+    self.assertEqual(4, self.count_lines("example_file.txt"))
+
+# ------------------------------------------------------------------
+
+def find_line(self, file_name):
+    try:
+        f = open(file_name)
+        try:
+            for line in f.readlines():
+                match = re.search('e', line)
+                if match:
+                    return line
+        finally:
+            f.close()
+    except IOError:
+        # should never happen
+        self.fail()
+
+def test_finding_lines(self):
+    self.assertEqual('test\n', self.find_line("example_file.txt"))
+
+## ------------------------------------------------------------------
+## THINK ABOUT IT:
+##
+## The count_lines and find_line are similar, and yet different.
+## They both follow the pattern of "sandwich code".
+##
+## Sandwich code is code that comes in three parts: (1) the top slice
+## of bread, (2) the meat, and (3) the bottom slice of bread.
+## The bread part of the sandwich almost always goes together, but
+## the meat part changes all the time.
+##
+## Because the changing part of the sandwich code is in the middle,
+## abstracting the top and bottom bread slices to a library can be
+## difficult in many languages.
+##
+## (Aside for C++ programmers: The idiom of capturing allocated
+## pointers in a smart pointer constructor is an attempt to deal with
+## the problem of sandwich code for resource allocation.)
+##
+## Python solves the problem using Context Managers. Consider the
+## following code:
+##
+
+class FileContextManager():
+    def __init__(self, file_name):
+        self._file_name = file_name
+        self._file = None
+
+    def __enter__(self):
+        self._file = open(self._file_name)
+        return self._file
+
+    def __exit__(self, cls, value, tb):
+        self._file.close()
+
+# Now we write:
+
+def count_lines2(self, file_name):
+    with self.FileContextManager(file_name) as f:
+        return len(f.readlines())
+
+def test_counting_lines2(self):
+    self.assertEqual(4, self.count_lines2("example_file.txt"))
+```
+
+## Monkey patching
+
+```python
+class AboutMonkeyPatching(Koan):
+    class Dog(object):
+        def bark(self):
+            return "WOOF"
+
+    def test_as_defined_dogs_do_bark(self):
+        fido = self.Dog()
+        self.assertEqual("WOOF", fido.bark())
+
+    # ------------------------------------------------------------------
+
+    # Add a new method to an existing class.
+    def test_after_patching_dogs_can_both_wag_and_bark(self):
+        def wag(self):
+            return "HAPPY"
+
+        self.Dog.wag = wag
+
+        fido = self.Dog()
+        self.assertEqual("HAPPY", fido.wag())
+        self.assertEqual("WOOF", fido.bark())
+
+    # ------------------------------------------------------------------
+
+    def test_most_built_in_classes_cannot_be_monkey_patched(self):
+        try:
+            int.is_even = lambda self: (self % 2) == 0
+        except StandardError as ex:
+            self.assertMatch("can't set attributes of built-in/extension type 'int'", ex[0])
+
+    # ------------------------------------------------------------------
+
+    class MyInt(int):
+        pass
+
+    def test_subclasses_of_built_in_classes_can_be_be_monkey_patched(self):
+        self.MyInt.is_even = lambda self: (self % 2) == 0
+
+        self.assertEqual(False, self.MyInt(1).is_even())
+        self.assertEqual(True, self.MyInt(2).is_even())
+```
+
+## Dice project
+```python
+class DiceSet(object):
+    def __init__(self):
+        self._values = None
+
+    @property
+    def values(self):
+        return self._values
+
+    def roll(self, n):
+        # Needs implementing!
+        # Tip: random.randint(min, max) can be used to generate random numbers
+        self._values = [random.randint(1, 6) for _ in range(n)]
+```
+
+## Method bindings
+```python
+def function():
+    return "pineapple"
+
+
+def function2():
+    return "tractor"
+
+
+class Class(object):
+    def method(self):
+        return "parrot"
+
+
+class AboutMethodBindings(Koan):
+    def test_methods_are_bound_to_an_object(self):
+        obj = Class()
+        self.assertEqual(True, obj.method.im_self == obj)
+
+    def test_methods_are_also_bound_to_a_function(self):
+        obj = Class()
+        self.assertEqual("parrot", obj.method())
+        self.assertEqual("parrot", obj.method.im_func(obj))
+
+    def test_functions_have_attributes(self):
+        self.assertEqual(31, len(dir(function)))
+        # ['__call__', '__class__', '__closure__', '__code__', '__defaults__', '__delattr__', '__dict__', '__doc__', '__format__', '__get__', '__getattribute__', '__globals__', '__hash__', '__init__', '__module__', '__name__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', 'func_closure', 'func_code', 'func_defaults', 'func_dict', 'func_doc', 'func_globals', 'func_name']
+        self.assertEqual(True, dir(function) == dir(Class.method.im_func))
+
+    def test_bound_methods_have_different_attributes(self):
+        obj = Class()
+        self.assertEqual(23, len(dir(obj.method)))
+        # ['__call__', '__class__', '__cmp__', '__delattr__', '__doc__', '__format__', '__func__', '__get__', '__getattribute__', '__hash__', '__init__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__self__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', 'im_class', 'im_func', 'im_self']
+
+    def test_setting_attributes_on_an_unbound_function(self):
+        function.cherries = 3
+        self.assertEqual(3, function.cherries)
+
+    def test_setting_attributes_on_a_bound_method_directly(self):
+        obj = Class()
+        try:
+            obj.method.cherries = 3
+        except AttributeError as ex:
+            self.assertMatch("'instancemethod' object has no attribute 'cherries'", ex[0])
+
+    def test_setting_attributes_on_methods_by_accessing_the_inner_function(self):
+        obj = Class()
+        obj.method.im_func.cherries = 3
+        self.assertEqual(3, obj.method.cherries)
+
+    def test_functions_can_have_inner_functions(self):
+        function2.get_fruit = function
+        self.assertEqual("pineapple", function2.get_fruit())
+
+    def test_inner_functions_are_unbound(self):
+        function2.get_fruit = function
+        try:
+            cls = function2.get_fruit.im_self
+        except AttributeError as ex:
+            self.assertMatch("'function' object has no attribute 'im_self'", ex[0])
+
+    # ------------------------------------------------------------------
+
+    class BoundClass(object):
+        def __get__(self, obj, cls):
+            return (self, obj, cls)
+
+    binding = BoundClass()
+
+    def test_get_descriptor_resolves_attribute_binding(self):
+        bound_obj, binding_owner, owner_type = self.binding
+        # Look at BoundClass.__get__():
+        #   bound_obj = self
+        #   binding_owner = obj
+        #   owner_type = cls
+
+        self.assertEqual('BoundClass', bound_obj.__class__.__name__)
+        self.assertEqual('AboutMethodBindings', binding_owner.__class__.__name__)
+        self.assertEqual(AboutMethodBindings, owner_type)
+
+    # ------------------------------------------------------------------
+
+    class SuperColor(object):
+        def __init__(self):
+            self.choice = None
+
+        def __set__(self, obj, val):
+            self.choice = val
+
+    color = SuperColor()
+
+    def test_set_descriptor_changes_behavior_of_attribute_assignment(self):
+        self.assertEqual(None, self.color.choice)
+        self.color = 'purple'
+        self.assertEqual('purple', self.color.choice)
+```
