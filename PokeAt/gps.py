@@ -78,23 +78,44 @@ else:
 def key(event):
     global last_lat, last_lng, ts
     c = event.char
+
     if c == 'j' or c == 'J':
-        last_lng -= speed1 if c == 'j' else speed2
+        r1 = random.random() * 0.01 * speed1
+        r2 = random.random() * 0.01 * speed1
+        last_lng -= speed1+r1 if c == 'j' else speed2+r1
+        last_lat -= r2
+        last_lng = round(last_lng, 7)
+        last_lat = round(last_lat, 7)
         ts = update_gpx(gpx, last_lat, last_lng, ts)
         print 'left:\t', last_lat, last_lng, ts
         update_xcode(click_locs)
     elif c == 'l' or c == 'L':
-        last_lng += speed1 if c == 'l' else speed2
+        r1 = random.random() * 0.01 * speed1
+        r2 = random.random() * 0.01 * speed1
+        last_lng += speed1+r1 if c == 'l' else speed2+r1
+        last_lat += r2
+        last_lng = round(last_lng, 7)
+        last_lat = round(last_lat, 7)
         ts = update_gpx(gpx, last_lat, last_lng, ts)
         print 'right:\t', last_lat, last_lng, ts
         update_xcode(click_locs)
     elif c == 'i' or c == 'I':
-        last_lat += speed1 if c == 'i' else speed2
+        r1 = random.random() * 0.01 * speed1
+        r2 = random.random() * 0.01 * speed1
+        last_lat += speed1+r1 if c == 'i' else speed2+r1
+        last_lng += r2
+        last_lng = round(last_lng, 7)
+        last_lat = round(last_lat, 7)
         ts = update_gpx(gpx, last_lat, last_lng, ts)
         print '  up:\t', last_lat, last_lng, ts
         update_xcode(click_locs)
     elif c == 'k' or c == 'K':
-        last_lat -= speed1 if c == 'k' else speed2
+        r1 = random.random() * 0.01 * speed1
+        r2 = random.random() * 0.01 * speed1
+        last_lat -= speed1+r1 if c == 'k' else speed2+r1
+        last_lng -= r2
+        last_lng = round(last_lng, 7)
+        last_lat = round(last_lat, 7)
         ts = update_gpx(gpx, last_lat, last_lng, ts)
         print 'down:\t', last_lat, last_lng, ts
         update_xcode(click_locs)
