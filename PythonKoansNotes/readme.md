@@ -855,3 +855,65 @@ class AboutDecoratingWithClasses(Koan):
         self.assertEqual("D'oh, D'oh, D'oh, D'oh", self.homer())
         self.assertEqual("DOH!", self.homer.__doc__)
 ```
+
+## Inheritance
+```python
+class Greyhound(Dog):
+    def __init__(self, name):
+        super(AboutInheritance.Greyhound, self).__init__(name)
+```
+
+## Mutiple Inheritance
+click [here](https://github.com/grehujt/python_koans/python2/koans/about_multiple_inheritance.py).
+
+## Scope
+```python
+class ...:
+    ...
+
+    # ------------------------------------------------------------------
+
+    global deadly_bingo
+    deadly_bingo = [4, 8, 15, 16, 23, 42]
+
+    def test_global_attributes_can_be_created_in_the_middle_of_a_class(self):
+        self.assertEqual(42, deadly_bingo[5])
+```
+
+## Module
+```python
+class ...:
+
+    ...
+
+    def test_modules_hide_attributes_prefixed_by_underscores(self):
+        try:
+            private_squirrel = _SecretSquirrel()
+        except NameError as ex:
+            self.assertMatch( "global name '_SecretSquirrel' is not defined", ex[0])
+
+    def test_private_attributes_are_still_accessible_in_modules(self):
+        from local_module import Duck  # local_module.py
+
+        duck = Duck()
+        self.assertEqual('password', duck._password)
+        # module level attribute hiding doesn't affect class attributes
+        # (unless the class itself is hidden).
+
+    def test_a_modules_XallX_statement_limits_what_wildcards_will_match(self):
+        """Examine results of from local_module_with_all_defined import *"""
+
+        # 'Goat' is on the __all__ list
+        goat = Goat()
+        self.assertEqual('George', goat.name)
+
+        # How about velociraptors?
+        lizard = _Velociraptor()
+        self.assertEqual('Cuddles', lizard.name)
+
+        # SecretDuck? Never heard of her!
+        try:
+            duck = SecretDuck()
+        except NameError as ex:
+            self.assertMatch("global name 'SecretDuck' is not defined", ex[0])
+```
