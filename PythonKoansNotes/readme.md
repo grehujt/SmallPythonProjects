@@ -864,7 +864,7 @@ class Greyhound(Dog):
 ```
 
 ## Mutiple Inheritance
-click [here](https://github.com/grehujt/python_koans/python2/koans/about_multiple_inheritance.py).
+click [here](https://github.com/grehujt/python_koans/blob/master/python2/koans/about_multiple_inheritance.py).
 
 ## Scope
 ```python
@@ -981,7 +981,7 @@ class AboutPackages(Koan):
 ```
 
 ## Class Attributes
-click [here](https://github.com/grehujt/python_koans/python2/koans/about_class_attributes.py).
+click [here](https://github.com/grehujt/python_koans/blob/master/python2/koans/about_class_attributes.py).
 
 ## Attribute Access
-click [here](https://github.com/grehujt/python_koans/python2/koans/about_attribute_access.py).
+click [here](https://github.com/grehujt/python_koans/blob/master/python2/koans/about_attribute_access.py).
