@@ -982,3 +982,6 @@ class AboutPackages(Koan):
 
 ## Class Attributes
 click [here](https://github.com/grehujt/python_koans/python2/koans/about_class_attributes.py).
+
+## Attribute Access
+click [here](https://github.com/grehujt/python_koans/python2/koans/about_attribute_access.py).
