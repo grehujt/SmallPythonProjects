@@ -985,3 +985,6 @@ click [here](https://github.com/grehujt/python_koans/blob/master/python2/koans/a
 
 ## Attribute Access
 click [here](https://github.com/grehujt/python_koans/blob/master/python2/koans/about_attribute_access.py).
+
+## Deleting Objects
+click [here](https://github.com/grehujt/python_koans/blob/master/python2/koans/about_deleting_objects.py).
