@@ -1035,3 +1035,9 @@ class Proxy(object):
         return self._method_cnt[attr] if attr in self._method_cnt else 0
 ```
 click [here](https://github.com/grehujt/python_koans/blob/master/python2/koans/about_proxy_object_project.py).
+
+## regex
+click [here](https://github.com/grehujt/python_koans/blob/master/python2/koans/about_regex.py).
+
+## extra_credit
+TODO
