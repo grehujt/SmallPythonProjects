@@ -41,6 +41,7 @@
     + pip install line_profiler
     + The profiler was designed to be used as a decorator
     + execute the profiler: kernprof -l script_to_profile.py
+    
     ![lp](pics/line_profiler.png)
 
 - [RunSnakeRun](http://www.vrplumber.com/programming/runsnakerun/)
@@ -54,6 +55,7 @@
         ```sh
         python -m cProfile -o xxx.prof xxx.py \<paras\>
         ```
+    
     ![png](pics/rsr.png)
 
 ## Tips and tricks of Python
@@ -74,7 +76,9 @@
     + dis module to show the bytecode
     + when generating a list, the for loop should not be your weapon of choice.
     + when generating big lists, consider using generators.
+    
     ![png](pics/perf1.png)
+
 - ctypes
     + allows the developer to reach under the hood of Python and tap into the power of the C language.
 - String concatenation
