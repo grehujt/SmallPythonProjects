@@ -95,6 +95,49 @@
 - Chained comparisons are good
 - Using namedtuples instead of regular (small) objects
 
+## Multithreading & multiprocessint
+- Multithreading
+    + benefits
+        * Responsiveness
+        * Faster execution
+        * Lower resource consumption
+        * Simplified sharing and communication
+        * Parallelization
+    + drawbacks
+        * Thread synchronization
+        * Crash due to problematic thread
+        * Deadlocks
+    + GIL
+        * The official version of Python (CPython) has a limitation called GIL. This GIL prevents multiple native threads from running Python's bytecode at once, which effectively trumps parallelism.
+        * A GIL is necessary because the memory management in CPython is not thread safe.
+    +  modules in python
+        * The thread module: This provides some limited ability to work with threads. It's simple to use, and for small tasks, it adds little overhead.
+        * The threading module: This is newer and included in Python since version 2.4. It provides a more powerful and higher level support for threads.
+        * Interthread communication using events
+
+        | use threads | do not use threads |
+        | ----------- | ------------------ |
+        | For heavy IO-bound scripts| To optimize scripts that are heavily CPU bound |
+        | When parallelism can be replaced by concurrency | For programs that must take advantage of multicore systems |
+        | For GUI development | |
+- Multiprocessing
+
+    | Adventages | Disadventages |
+    | ---------- | ------------- |
+    | Takes advantage of multicore systems | Larger memory footprint |
+    | Separate memory space removes race conditions from the equation | Harder to share mutable data between processes |
+    | Child processes are easily interruptible (killable) | Interprocess communication (IPC) is harder than with threads |
+    | Avoids the GIL limitation (although only in the case of CPython) | |
+
+    + Pool class, which represents a pool of worker processes that facilitate different ways to execute a set of tasks in subprocesses, main apis:
+        * apply
+        * apply_async
+        * map
+    
+    + Interprocess communication
+        * The Queue class provides a thread-safe and process-safe first-in-first-out (FIFO) mechanism to exchange data.
+        * Pipes provide a bidirectional channel of communication between two processes. The Pipe() function returns a pair of connection objects, each representing one side of the pipe. Each connection object has both a send() and a recv() method.
+        * Events. Event objects can't be passed into worker functions. If you try to do that, a runtime error will be issued, saying that semaphore objects can only be shared between processes through inheritance.
 
 **References:**
 - Mastering Python High Performance
