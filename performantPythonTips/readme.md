@@ -144,11 +144,11 @@
 - Cython, which is basically a transpiler of (static typing) Python code into C code.
     ![png](pics/cython.png)
 
-| pypy use cases | cython use cases |
-| -------------- | ---------------- |
-| You're not dealing with an execute once script. | You're familiar with C code. |
-| Full support of third-party libraries is not required. | Losing Python's readability is not a problem. |
-| You need your code to be compatible with CPython. | Full support of the Python language is needed. |
+    | pypy use cases | cython use cases |
+    | -------------- | ---------------- |
+    | You're not dealing with an execute once script. | You're familiar with C code. |
+    | Full support of third-party libraries is not required. | Losing Python's readability is not a problem. |
+    | You need your code to be compatible with CPython. | Full support of the Python language is needed. |
 
 **References:**
 - Mastering Python High Performance
