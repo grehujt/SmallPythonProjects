@@ -139,5 +139,16 @@
         * Pipes provide a bidirectional channel of communication between two processes. The Pipe() function returns a pair of connection objects, each representing one side of the pipe. Each connection object has both a send() and a recv() method.
         * Events. Event objects can't be passed into worker functions. If you try to do that, a runtime error will be issued, saying that semaphore objects can only be shared between processes through inheritance.
 
+## PyPy & Cython
+- PyPy, which consists of a version of Python and is implemented in RPython. It has a JIT compiler in charge of optimizing the code during execution time.
+- Cython, which is basically a transpiler of (static typing) Python code into C code.
+    ![png](pics/cython.png)
+
+| pypy use cases | cython use cases |
+| -------------- | ---------------- |
+| You're not dealing with an execute once script. | You're familiar with C code. |
+| Full support of third-party libraries is not required. | Losing Python's readability is not a problem. |
+| You need your code to be compatible with CPython. | Full support of the Python language is needed. |
+
 **References:**
 - Mastering Python High Performance
