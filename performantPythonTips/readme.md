@@ -61,6 +61,7 @@
 ## Tips and tricks of Python
 - Memoization / lookup tables
 - Usage of default arguments
+
     ```python
     import math 
     #original function
@@ -72,6 +73,7 @@
     def degree_sin(deg, factor=math.pi/180.0, sin=math.sin):
         return sin(deg * factor)
     ```
+
 - List comprehension and generators
     + dis module to show the bytecode
     + when generating a list, the for loop should not be your weapon of choice.
