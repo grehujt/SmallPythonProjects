@@ -150,5 +150,24 @@
     | Full support of third-party libraries is not required. | Losing Python's readability is not a problem. |
     | You need your code to be compatible with CPython. | Full support of the Python language is needed. |
 
+## Lightning Fast Number Crunching
+- [Numba](http://numba.pydata.org)
+    +  allows you to write high-performance functions in pure Python by generating optimized machine code.
+    + decorator style jit
+    + main features:
+        * On-the-fly code generation
+        * Native code generation for both CPU and GPU hardware
+        * Integration with Python's scientific software, thanks to the Numpy dependency
+
+- [Parakeet](http://www.parakeetpython.com)
+    + a runtime compiler for scientific computing in Python which uses type inference, data parallel array operators, and a lot of black magic to make your code run faster.
+    + decorator style jit
+    + very specific because it only supports a very narrow subset of the resulting combination of Python and NumPy
+    +  the performance gain can be amazing, Parakeet only supports a very limited version of Python, so it is not really meant to be a general purpose optimizer (quite the opposite actually).
+
+- [pandas](http://pandas.pydata.org)
+    + provides a set of high-performance data structures and analysis tools.
+    + on top of numpy
+
 **References:**
 - Mastering Python High Performance
