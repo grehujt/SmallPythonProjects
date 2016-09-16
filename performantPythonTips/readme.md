@@ -47,15 +47,18 @@
 - [RunSnakeRun](http://www.vrplumber.com/programming/runsnakerun/)
     + a small GUI utility that allows you to view (Python) cProfile or Profile profiler dumps in a sortable GUI view.
     + installation:
+
         ```sh
         apt-get install python-profiler python-wxgtk2.8 python-setuptools
         pip install  SquareMap RunSnakeRun
         ```
+
     + run:
+
         ```sh
         python -m cProfile -o xxx.prof xxx.py \<paras\>
         ```
-    
+
     ![png](pics/rsr.png)
 
 ## Tips and tricks of Python
@@ -67,8 +70,7 @@
     #original function
     def degree_sin(deg):
         return math.sin(deg * math.pi / 180.0)
-    #optimized function, the factor variable is calculated during function 
-    creation time, 
+    #optimized function, the factor variable is calculated during function creation time, 
     #and so is the lookup of the math.sin method.
     def degree_sin(deg, factor=math.pi/180.0, sin=math.sin):
         return sin(deg * factor)
@@ -122,6 +124,7 @@
         | For heavy IO-bound scripts| To optimize scripts that are heavily CPU bound |
         | When parallelism can be replaced by concurrency | For programs that must take advantage of multicore systems |
         | For GUI development | |
+
 - Multiprocessing
 
     | Adventages | Disadventages |
