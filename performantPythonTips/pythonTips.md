@@ -138,3 +138,182 @@ False
 - [PyPy](http://pypy.org/).
 - [Numba](http://numba.pydata.org), allows you to write high-performance functions in pure Python by generating optimized machine code.
 - [Parakeet](http://www.parakeetpython.com), a runtime compiler for scientific computing in Python which uses type inference, data parallel array operators, and a lot of black magic to make your code run faster.
+
+## use key to sort instead of cmp
+```python
+import operator
+somelist = [(1, 5, 8), (6, 2, 4), (9, 7, 5)]
+somelist.sort(key=operator.itemgetter(0))
+somelist
+#Output = [(1, 5, 8), (6, 2, 4), (9, 7, 5)]
+somelist.sort(key=operator.itemgetter(1))
+somelist
+#Output = [(6, 2, 4), (1, 5, 8), (9, 7, 5)]
+```
+
+## avoid using '.' operator in loops
+```python
+lowerlist = ['this', 'is', 'lowercase']
+upper = str.upper
+upperlist = []
+append = upperlist.append
+for word in lowerlist:
+    append(upper(word))
+    print(upperlist)
+    #Output = ['THIS', 'IS', 'LOWERCASE']
+```
+
+## It's Better to Beg for Forgiveness than to Ask for Permission
+```python
+# beg for forgiveness
+n = 16
+myDict = {}
+for i in range(0, n):
+    char = 'abcd'[i%4]
+    try:
+        myDict[char] += 1
+    except KeyError:
+        myDict[char] = 1
+    print(myDict)
+
+# ask for permission
+n = 16
+myDict = {}
+for i in range(0, n):
+    char = 'abcd'[i%4]
+    try:
+        myDict[char] += 1
+    except KeyError:
+        myDict[char] = 1
+    print(myDict)
+```
+
+## use list comprehension & generator
+
+## decorator
+```python
+import time
+from functools import wraps
+ 
+def timethis(func):
+    '''
+    Decorator that reports the execution time.
+    '''
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(func.__name__, end-start)
+        return result
+    return wrapper
+ 
+@timethis
+def countdown(n):
+    while n > 0:
+        n -= 1
+ 
+countdown(100000)
+ 
+# ('countdown', 0.006999969482421875)
+```
+
+## with
+```python
+import time
+from functools import wraps
+ 
+def timethis(func):
+    '''
+    Decorator that reports the execution time.
+    '''
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(func.__name__, end-start)
+        return result
+    return wrapper
+ 
+@timethis
+def countdown(n):
+    while n > 0:
+        n -= 1
+ 
+countdown(100000)
+ 
+# ('countdown', 0.006999969482421875)
+```
+
+## @contextmanager (slower than previous one)
+```python
+from contextlib import contextmanager
+import time
+ 
+@contextmanager
+def demo(label):
+    start = time.time()
+    try:
+        yield
+    finally:
+        end = time.time()
+        print('{}: {}'.format(label, end - start))
+ 
+with demo('counting'):
+    n = 10000000
+    while n > 0:
+        n -= 1
+ 
+# counting: 1.32399988174
+```
+
+## Descriptors
+```python
+class Celsius(object):
+    def __init__(self, value=0.0):
+        self.value = float(value)
+    def __get__(self, instance, cls):
+        return self.value
+    def __set__(self, instance, value):
+        self.value = float(value)
+ 
+class Temperature(object):
+    celsius = Celsius()
+ 
+temp=Temperature()
+temp.celsius #calls Celsius.__get__
+```
+
+## Zipping and unzipping lists and iterables
+```python
+>>> a = [1, 2, 3]
+>>> b = ['a', 'b', 'c']
+>>> z = zip(a, b)
+>>> z
+[(1, 'a'), (2, 'b'), (3, 'c')]
+>>> zip(*z)
+[(1, 2, 3), ('a', 'b', 'c')]
+```
+
+## Grouping adjacent list items using zip
+```python
+>>> a = [1, 2, 3, 4, 5, 6]
+>>> # Using iterators
+>>> group_adjacent = lambda a, k: zip(*([iter(a)] * k))
+>>> group_adjacent(a, 3)
+[(1, 2, 3), (4, 5, 6)]
+>>> group_adjacent(a, 2)
+[(1, 2), (3, 4), (5, 6)]
+>>> group_adjacent(a, 1)
+[(1,), (2,), (3,), (4,), (5,), (6,)]
+>>> # Using slices
+>>> from itertools import islice
+>>> group_adjacent = lambda a, k: zip(*(islice(a, i, None, k) for i in range(k)))
+>>> group_adjacent(a, 3)
+[(1, 2, 3), (4, 5, 6)]
+>>> group_adjacent(a, 2)
+[(1, 2), (3, 4), (5, 6)]
+>>> group_adjacent(a, 1)
+[(1,), (2,), (3,), (4,), (5,), (6,)]
+```
