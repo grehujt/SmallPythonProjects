@@ -357,3 +357,110 @@ temp.celsius #calls Celsius.__get__
 >>> mi
 {1: 'a', 2: 'b', 3: 'c', 4: 'd'}
 ```
+
+## Flattening lists
+```python
+>>> a = [[1, 2], [3, 4], [5, 6]]
+>>> list(itertools.chain.from_iterable(a))
+[1, 2, 3, 4, 5, 6]
+>>> sum(a, [])
+[1, 2, 3, 4, 5, 6]
+>>> [x for l in a for x in l]
+[1, 2, 3, 4, 5, 6]
+>>> a = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
+>>> [x for l1 in a for l2 in l1 for x in l2]
+[1, 2, 3, 4, 5, 6, 7, 8]
+>>> a = [1, 2, [3, 4], [[5, 6], [7, 8]]]
+>>> flatten = lambda x: [y for l in x for y in flatten(l)] if type(x) is list else [x]
+>>> flatten(a)
+[1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+## Dictionary comprehensions
+```python
+>>> m = {x: x ** 2 for x in range(5)}
+>>> m
+{0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+>>> m = {x: 'A' + str(x) for x in range(10)}
+>>> m
+{0: 'A0', 1: 'A1', 2: 'A2', 3: 'A3', 4: 'A4', 5: 'A5', 6: 'A6', 7: 'A7', 8: 'A8', 9: 'A9'}
+```
+
+## Be aware of default para
+```python
+def foo(bar=[]):        # bar is optional and defaults to [] if not specified
+    bar.append("baz")    # but this line could be problematic, as we'll see...
+    return bar
+
+>>> foo()
+["baz"]
+>>> foo()
+["baz", "baz"]
+>>> foo()
+["baz", "baz", "baz"]
+```
+
+## do not try to add/del elements during iteration
+```python
+# wrong
+>>> odd = lambda x : bool(x % 2)
+>>> numbers = [n for n in range(10)]
+>>> for i in range(len(numbers)):
+...     if odd(numbers[i]):
+...         del numbers[i]  # BAD: Deleting item from a list while iterating over it
+...
+Traceback (most recent call last):
+      File "<stdin>", line 2, in <module>
+IndexError: list index out of range
+
+# correct
+>>> odd = lambda x : bool(x % 2)
+>>> numbers = [n for n in range(10)]
+>>> numbers[:] = [n for n in numbers if not odd(n)]  # ahh, the beauty of it all
+>>> numbers
+[0, 2, 4, 6, 8]
+```
+
+## generator
+```python
+%timeit -n 100 a = (i for i in range(100000))
+%timeit -n 100 b = [i for i in range(100000)]
+100 loops, best of 3: 1.54 ms per loop
+100 loops, best of 3: 4.56 ms per loop
+
+%timeit -n 10 for x in (i for i in range(100000)): pass
+%timeit -n 10 for x in [i for i in range(100000)]: pass
+10 loops, best of 3: 6.51 ms per loop
+10 loops, best of 3: 5.54 ms per loop
+```
+
+## while 1 is faster than while True
+> True is a global variable in python 2.x
+
+## use \*\* instead of pow
+```python
+%timeit -n 10000 c = pow(2,20)
+%timeit -n 10000 c = 2**20
+10000 loops, best of 3: 284 ns per loop
+10000 loops, best of 3: 16.9 ns per loop
+```
+
+## use cProfile/cPickle/cStringIO instead of profile/pickle/stringIO
+
+## deserialization
+```python
+import json
+import cPickle
+a = range(10000)
+s1 = str(a)
+s2 = cPickle.dumps(a)
+s3 = json.dumps(a)
+%timeit -n 100 x = eval(s1)
+%timeit -n 100 x = cPickle.loads(s2)
+%timeit -n 100 x = json.loads(s3)
+100 loops, best of 3: 16.8 ms per loop
+100 loops, best of 3: 2.02 ms per loop
+100 loops, best of 3: 798 µs per loop
+```
+
+
