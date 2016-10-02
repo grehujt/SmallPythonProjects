@@ -465,7 +465,7 @@ s3 = json.dumps(a)
 
 ## datetime conversions
 
-![img](pics/datetime.png)
+![img](pics/datatime.png)
 
 ## one line start python http server
 ```sh
