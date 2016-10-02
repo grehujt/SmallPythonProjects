@@ -463,4 +463,11 @@ s3 = json.dumps(a)
 100 loops, best of 3: 798 µs per loop
 ```
 
+## datetime conversions
 
+![img](pics/datetime.png)
+
+## one line start python http server
+```sh
+python -m SimpleHTTPServer
+```
