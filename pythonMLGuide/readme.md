@@ -12,6 +12,37 @@
 
 ## Classic learning algorithms
 - 线性回归
+    + 线性回归通常用于根据连续变量估计实际数值（房价、呼叫次数、总销售额等）。我们通过拟合最佳直线来建立自变量和因变量的关系。这条最佳直线叫做回归线，并且用 Y= a *X + b 这条线性等式来表示。
+    + 线性回归的两种主要类型是一元线性回归和多元线性回归。一元线性回归的特点是只有一个自变量。多元线性回归的特点正如其名，存在多个自变量。找最佳拟合直线的时候，你可以拟合到多项或者曲线回归。这些就被叫做多项或曲线回归。
+    
+    ```python
+    #Import Library
+    #Import other necessary libraries like pandas, numpy...
+    from sklearn import linear_model
+     
+    #Load Train and Test datasets
+    #Identify feature and response variable(s) and values must be numeric and numpy arrays
+    x_train=input_variables_values_training_datasets
+    y_train=target_variables_values_training_datasets
+    x_test=input_variables_values_test_datasets
+     
+    # Create linear regression object
+    linear = linear_model.LinearRegression()
+     
+    # Train the model using the training sets and check score
+    linear.fit(x_train, y_train)
+    linear.score(x_train, y_train)
+     
+    #Equation coefficient and Intercept
+    print('Coefficient: n', linear.coef_)
+    print('Intercept: n', linear.intercept_)
+     
+    #Predict Output
+    predicted= linear.predict(x_test)
+    ```
+
+    ![pic](./pics/linear_regression.png)
+
 - 逻辑回归
 - 决策树
 - SVM
