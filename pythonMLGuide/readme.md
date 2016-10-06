@@ -44,6 +44,39 @@
     ![pic](./pics/linear_regression.png)
 
 - 逻辑回归
+    + 别被它的名字迷惑了！这是一个分类算法而不是一个回归算法。该算法可根据已知的一系列因变量估计离散数值（比方说二进制数值 0 或 1 ，是或否，真或假）。简单来说，它通过将数据拟合进一个逻辑函数来预估一个事件出现的概率。因此，它也被叫做逻辑回归。因为它预估的是概率，所以它的输出值大小在 0 和 1 之间（正如所预计的一样）。
+    + 假设你的朋友让你解开一个谜题。这只会有两个结果：你解开了或是你没有解开。想象你要解答很多道题来找出你所擅长的主题。这个研究的结果就会像是这样：假设题目是一道十年级的三角函数题，你有 70%的可能会解开这道题。然而，若题目是个五年级的历史题，你只有30%的可能性回答正确。这就是逻辑回归能提供给你的信息。
+    + 从数学上看，在结果中，几率的对数使用的是预测变量的线性组合模型。
+    
+    ```
+    odds= p/ (1-p) = probability of event occurrence / probability of not event occurrence
+    ln(odds) = ln(p/(1-p))
+    logit(p) = ln(p/(1-p)) = b0+b1X1+b2X2+b3X3....+bkXk
+    ```
+
+    + 在上面的式子里，p 是我们感兴趣的特征出现的概率。它选用使观察样本值的可能性最大化的值作为参数，而不是通过计算误差平方和的最小值(就如一般的回归分析用到的一样)。现在你也许要问了，为什么我们要求出对数呢？简而言之，这种方法是复制一个阶梯函数的最佳方法之一。我本可以更详细地讲述，但那就违背本篇指南的主旨了。
+
+    ```python
+    #Import Library
+    from sklearn.linear_model import LogisticRegression
+    #Assumed you have, X (predictor) and Y (target) for training data set and x_test(predictor) of test_dataset
+    # Create logistic regression object
+    model = LogisticRegression()
+     
+    # Train the model using the training sets and check score
+    model.fit(X, y)
+    model.score(X, y)
+     
+    #Equation coefficient and Intercept
+    print('Coefficient: n', model.coef_)
+    print('Intercept: n', model.intercept_)
+     
+    #Predict Output
+    predicted= model.predict(x_test)
+    ```
+
+    ![pic](pics/logit.jpg)
+
 - 决策树
 - SVM
 - 朴素贝叶斯
