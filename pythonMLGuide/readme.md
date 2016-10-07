@@ -78,6 +78,54 @@
     ![pic](pics/logit.jpg)
 
 - 决策树
+    + 监督式学习算法
+    + 被用于分类问题
+    + 同时适用于离散变量和连续变量
+    + [A Complete Tutorial on Tree Based Modeling from Scratch (in R & Python)](https://www.analyticsvidhya.com/blog/2016/04/complete-tutorial-tree-based-modeling-scratch-in-python/)
+    + Advantages:
+        * Easy to Understand & Interpret
+        * Useful in Data exploration
+            Decision tree is one of the fastest way to identify most significant variables and relation between two or more variables.
+        * Less data cleaning required
+        * It is not influenced by outliers and missing values to a fair degree.
+        * Data type is not a constraint: It can handle both numerical and categorical variables.
+        * Non Parametric Method: decision trees have no assumptions about the space distribution and the classifier structure.
+    + Disadvantages:
+        * Overfitting
+            Solutions:
+            - Setting constraints on tree size
+                + Minimum samples for a node split
+                + Minimum samples for a terminal node (leaf)
+                + Maximum depth of tree (vertical depth)
+                + Maximum number of terminal nodes
+                + Maximum features to consider for split
+            - Tree pruning
+                + Unlike greedy setting constraints approach, if we use pruning, we in effect look at a few steps ahead and make a choice.
+                + sklearn’s decision tree classifier does not currently support pruning.
+        * Not fit for continuous variables
+    + When to use:
+        * If the relationship between dependent & independent variable is well approximated by a linear model, linear regression will outperform tree based model.
+        * If there is a high non-linearity & complex relationship between dependent & independent variables, a tree model will outperform a classical regression method.
+        * If you need to build a model which is easy to explain to people, a decision tree model will always do better than a linear model. Decision tree models are even simpler to interpret than linear regression!
+
+    ```python
+    #Import Library
+    #Import other necessary libraries like pandas, numpy...
+    from sklearn import tree
+     
+    #Assumed you have, X (predictor) and Y (target) for training data set and x_test(predictor) of test_dataset
+    # Create tree object 
+    model = tree.DecisionTreeClassifier(criterion='gini') # for classification, here you can change the algorithm as gini or entropy (information gain) by default it is gini  
+     
+    # model = tree.DecisionTreeRegressor() for regression
+    # Train the model using the training sets and check score
+    model.fit(X, y)
+    model.score(X, y)
+     
+    #Predict Output
+    predicted= model.predict(x_test)
+    ```
+
 - SVM
 - 朴素贝叶斯
 - K最近邻算法
@@ -86,3 +134,6 @@
 - 降维算法
 - Gradient Boost 和 Adaboost 算法
 
+**Reference**
+- [10 种机器学习算法的要点](http://blog.jobbole.com/92021/)
+- [complete-tutorial-tree-based-modeling-scratch-in-python](https://www.analyticsvidhya.com/blog/2016/04/complete-tutorial-tree-based-modeling-scratch-in-python/)
