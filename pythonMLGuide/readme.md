@@ -127,6 +127,33 @@
     ```
 
 - SVM
+    + 这是一种分类方法
+    + 在这个算法中，我们将每个数据在N维空间中用点标出（N是你所有的特征总数），每个特征的值是一个坐标的值。
+    + 举个例子，如果我们只有身高和头发长度两个特征，我们会在二维空间中标出这两个变量，每个点有两个坐标（这些坐标叫做支持向量）:
+        
+        ![pic](pics/svm1.jpg)
+
+        现在，我们会找到将两组不同数据分开的一条直线。在这里，我们的目标是找到一条将两组数据分开的直线，使得最靠近此直线的点的距离最大化：
+
+        ![pic](pics/svm2.jpg)
+
+        上面示例中的黑线将数据分类优化成两个小组，两组中距离最近的点（图中A、B点）到达黑线的距离满足最优条件。这条直线就是我们的分割线。接下来，测试数据落到直线的哪一边，我们就将它分到哪一类去。
+
+        ```python
+        #Import Library
+        from sklearn import svm
+         
+        #Assumed you have, X (predictor) and Y (target) for training data set and x_test(predictor) of test_dataset
+        # Create SVM classification object 
+        model = svm.svc() # there is various option associated with it, this is simple for classification. You can refer link, for mo# re detail.
+        # Train the model using the training sets and check score
+        model.fit(X, y)
+        model.score(X, y)
+         
+        #Predict Output
+        predicted= model.predict(x_test)
+        ```
+
 - 朴素贝叶斯
 - K最近邻算法
 - K均值算法
@@ -137,3 +164,4 @@
 **Reference**
 - [10 种机器学习算法的要点](http://blog.jobbole.com/92021/)
 - [complete-tutorial-tree-based-modeling-scratch-in-python](https://www.analyticsvidhya.com/blog/2016/04/complete-tutorial-tree-based-modeling-scratch-in-python/)
+- [support-vector-machine-simplified](https://www.analyticsvidhya.com/blog/2014/10/support-vector-machine-simplified/)
