@@ -145,7 +145,7 @@
          
         #Assumed you have, X (predictor) and Y (target) for training data set and x_test(predictor) of test_dataset
         # Create SVM classification object 
-        model = svm.svc() # there is various option associated with it, this is simple for classification. You can refer link, for mo# re detail.
+        model = svm.svc() # there is various option associated with it, this is simple for classification.
         # Train the model using the training sets and check score
         model.fit(X, y)
         model.score(X, y)
@@ -155,6 +155,32 @@
         ```
 
 - 朴素贝叶斯
+    + 一个朴素贝叶斯分类器假设一个分类的特性与该分类的其它特性不相关。
+    + 举个例子，如果一个水果又圆又红，并且直径大约是 3 英寸，那么这个水果可能会是苹果。即便这些特性互相依赖，或者依赖于别的特性的存在，朴素贝叶斯分类器还是会假设这些特性分别独立地暗示这个水果是个苹果。
+    + 朴素贝叶斯模型易于建造，且对于大型数据集非常有用。虽然简单，但是朴素贝叶斯的表现却超越了非常复杂的分类方法。
+    + 这个算法通常被用于文本分类，以及涉及到多个类的问题。
+
+    ![img](pics/nb.jpg)
+
+    + P(c|x) 是已知预示变量（属性）的前提下，类（目标）的后验概率
+    + P(c) 是类的先验概率
+    + P(x|c) 是可能性，即已知类的前提下，预示变量的概率
+    + P(x) 是预示变量的先验概率
+
+    ```python
+    #Import Library
+    from sklearn.naive_bayes import GaussianNB
+     
+    #Assumed you have, X (predictor) and Y (target) for training data set and x_test(predictor) of test_dataset
+    # Create NB classification object model = GaussianNB() # there is other distribution for multinomial classes like Bernoulli Naive Bayes
+    # Train the model using the training sets and check score
+    model.fit(X, y)
+     
+    #Predict Output
+    predicted= model.predict(x_test)
+    ```
+
+
 - K最近邻算法
 - K均值算法
 - 随机森林算法
