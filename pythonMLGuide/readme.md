@@ -172,7 +172,8 @@
     from sklearn.naive_bayes import GaussianNB
      
     #Assumed you have, X (predictor) and Y (target) for training data set and x_test(predictor) of test_dataset
-    # Create NB classification object model = GaussianNB() # there is other distribution for multinomial classes like Bernoulli Naive Bayes
+    # Create NB classification object 
+    model = GaussianNB() # there is other distribution for multinomial classes like Bernoulli Naive Bayes
     # Train the model using the training sets and check score
     model.fit(X, y)
      
@@ -180,8 +181,26 @@
     predicted= model.predict(x_test)
     ```
 
-
 - K最近邻算法
+    + 可用于分类问题和回归问题。然而，在业界内，K – 最近邻算法更常用于分类问题。
+    + 它储存所有的案例，通过周围k个案例中的大多数情况划分新的案例。根据一个距离函数，新案例会被分配到它的 K 个近邻中最普遍的类别中去。
+    + 这些距离函数可以是欧式距离、曼哈顿距离、明式距离或者是汉明距离。前三个距离函数用于连续函数，第四个函数（汉明函数）则被用于分类变量。
+    + 使用 KNN 建模时，选择 K 的取值是一个挑战。
+    + KNN 的计算成本很高。(instance-based classification)
+    + 变量应该先标准化（normalized），不然会被更高范围的变量偏倚。
+    + 在使用KNN之前，要在野值去除和噪音去除等前期处理多花功夫。
+    
+    ```python
+    from sklearn.neighbors import KNeighborsClassifier
+    #Assumed you have, X (predictor) and Y (target) for training data set and x_test(predictor) of test_dataset
+    # Create KNeighbors classifier object 
+    model = KNeighborsClassifier(n_neighbors=6) # default value for n_neighbors is 5  
+    # Train the model using the training sets and check score
+    model.fit(X, y) 
+    #Predict Output
+    predicted= model.predict(x_test)
+    ```
+
 - K均值算法
 - 随机森林算法
 - 降维算法
