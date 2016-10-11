@@ -202,6 +202,28 @@
     ```
 
 - K均值算法
+    + Unsupervised clustering algorithm:
+        1. K – 均值算法给每个集群选择k个点。这些点称作为质心。
+        2. 每一个数据点与距离最近的质心形成一个集群，也就是 k 个集群。
+        3. 根据现有的类别成员，找出每个类别的质心。现在我们有了新质心。
+        4. 当我们有新质心后，重复步骤 2 和步骤 3。找到距离每个数据点最近的质心，并与新的k集群联系起来。重复这个过程，直到数据都收敛了，也就是当质心不再改变。
+    + K selection:
+        * K – 均值算法涉及到集群，每个集群有自己的质心。一个集群内的质心和各数据点之间距离的平方和形成了这个集群的平方值之和。同时，当所有集群的平方值之和加起来的时候，就组成了集群方案的平方值之和。
+        * 我们知道，当集群的数量增加时，K值会持续下降。但是，如果你将结果用图表来表示，你会看到距离的平方总和快速减少。到某个值 k 之后，减少的速度就大大下降了。在此，我们可以找到集群数量的最优值。
+
+        ![pic](pics/kmean.jpg)
+
+    ```python
+    from sklearn.cluster import KMeans
+    #Assumed you have, X (attributes) for training data set and x_test(attributes) of test_dataset
+    # Create KMeans model 
+    model = KMeans(n_clusters=3, random_state=0)   
+    # Train the model using the training sets and check score
+    model.fit(X)   
+    #Predict Output
+    predicted= model.predict(x_test)
+    ```
+    
 - 随机森林算法
 - 降维算法
 - Gradient Boost 和 Adaboost 算法
