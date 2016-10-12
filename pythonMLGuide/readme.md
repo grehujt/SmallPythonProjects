@@ -225,10 +225,74 @@
     ```
     
 - 随机森林算法
+    + 在随机森林算法中，我们有一系列的决策树（因此又名“森林”）。
+    + 为了根据一个新对象的属性将其分类，每一个决策树有一个分类，称之为这个决策树“投票”给该分类。这个森林选择获得森林里（在所有树中）获得票数最多的分类(bagging)。
+    + 每棵树是像这样种植养成的：
+        * 如果训练集的案例数是 N，则从 N 个案例中用重置抽样法随机抽取样本。这个样本将作为“养育”树的训练集。
+        * 假如有 M 个输入变量，则定义一个数字 m<<M。m 表示，从 M 中随机选中 m 个变量，这 m 个变量中最好的切分会被用来切分该节点。在种植森林的过程中，m 的值保持不变。
+        * 尽可能大地种植每一棵树，全程不剪枝。
+    + Advantages of Random Forest:
+        * This algorithm **can solve both type of problems i.e. classification and regression** and does a decent estimation at both fronts.
+        * One of benefits of Random forest which excites me most is, the power of **handle large data set with higher dimensionality**. It can handle thousands of input variables and **identify most significant variables** so it **is considered as one of the dimensionality reduction methods**.
+        * It has an effective method for estimating missing data and maintains accuracy when a large proportion of the data are missing.
+        * It has methods for balancing errors in data sets where classes are imbalanced.
+        * The capabilities of the above can be extended to unlabeled data, leading to unsupervised clustering, data views and outlier detection.
+    + Disadvantages of Random Forest:
+        * It surely does a good job at classification but not as good as for regression problem as it does not give precise continuous nature predictions.
+        * Random Forest can feel like a black box approach for statistical modelers – you have very little control on what the model does. You can at best – try different parameters and random seeds!
+
+    ```python
+    #Import Library
+    from sklearn.ensemble import RandomForestClassifier
+    #Assumed you have, X (predictor) and Y (target) for training data set and x_test(predictor) of test_dataset
+    # Create Random Forest object
+    model= RandomForestClassifier()
+    # Train the model using the training sets and check score
+    model.fit(X, y)
+    #Predict Output
+    predicted= model.predict(x_test)
+    ```
+
 - 降维算法
+    + Dimension Reduction refers to the process of converting a set of data having vast dimensions into data with lesser dimensions ensuring that it conveys similar information concisely.
+    + 作为一个数据科学家，我们提供的数据包含许多特点。这听起来给建立一个经得起考研的模型提供了很好材料，但有一个挑战：如何从 1000 或者 2000 里分辨出最重要的变量呢？在这种情况下，降维算法和别的一些算法（比如决策树、随机森林、PCA、因子分析）帮助我们根据相关矩阵，缺失的值的比例和别的要素来找出这些重要变量。
+    + the benefits of Dimension Reduction:
+        * It helps in data compressing and reducing the storage space required
+        * It fastens the time required for performing same computations.
+        * It takes care of multi-collinearity that improves the model performance. It removes redundant features. 
+        * Reducing the dimensions of data to 2D or 3D may allow us to plot and visualize it precisely.
+        * It is helpful in noise removal.
+    + common methods to perform Dimension Reduction:
+        * drop the variable if it has more than ~40-50% __missing values__.
+        * drop variables having __low variance__ compared to others
+        * __Decision Trees__: It can be used as a ultimate solution to tackle multiple challenges like missing values, outliers and identifying significant variables.
+        * __Random Forest__: Similar to decision tree is Random Forest. I would also recommend using the in-built feature importance provided by random forests to select a smaller subset of input features. Just be careful that random forests have a tendency to bias towards variables that have more no. of distinct values i.e. favor numeric variables over binary/categorical values.
+        * __High Correlation__: Dimensions exhibiting higher correlation can lower down the performance of model.Moreover, it is not good to have multiple variables of similar information or variation also known as __“Multicollinearity”__. You can use __Pearson (continuous variables)__ or __Polychoric (discrete variables) correlation matrix__ to identify the variables with high correlation and select one of them using __VIF (Variance Inflation Factor)__. Variables having higher value ( VIF > 5 ) can be dropped.
+        * __Backward Feature Elimination__: In this method, we start with all n dimensions. Compute the __sum of square of error (SSR)__ after eliminating each variable (n times). Then, identifying variables whose removal has produced the smallest increase in the SSR and removing it finally, leaving us with n-1 input features. Repeat this process until no other variables can be dropped. Reverse to this, we can use “__Forward Feature Selection__” method. In this method, we select one variable and analyse the performance of model by adding another variable.
+        * __Factor Analysis__: Let’s say some variables are highly correlated. These variables can be grouped by their correlations i.e. all variables in a particular group can be highly correlated among themselves but have low correlation with variables of other group(s). Here each group represents a single underlying construct or factor. These factors are small in number as compared to large number of dimensions. However, these factors are difficult to observe. There are basically two methods of performing factor analysis:
+            - EFA (Exploratory Factor Analysis)
+            - CFA (Confirmatory Factor Analysis)
+        * __Principal Component Analysis (PCA)__: In this technique, variables are transformed into a new set of variables, which are linear combination of original variables. These new set of variables are known as principle components. They are obtained in such a way that first principle component accounts for most of the possible variation of original data after which each succeeding component has the highest possible variance.The second principal component must be orthogonal to the first principal component. In other words, it does its best to capture the variance in the data that is not captured by the first principal component. For two-dimensional dataset, there can be only two principal components. Below is a snapshot of the data and its first and second principal components. You can notice that second principle component is orthogonal to first principle component.The principal components are sensitive to the scale of measurement, now to fix this issue we should __always standardize variables before applying PCA__. __Applying PCA to your data set loses its meaning__. If interpretability of the results is important for your analysis, PCA is not the right technique for your project.
+    
+    ```python
+    #Import Library
+    from sklearn import decomposition
+     
+    #Assumed you have training and test data set as train and test
+    # Create PCA obeject pca= decomposition.PCA(n_components=k) #default value of k =min(n_sample, n_features)
+    # For Factor analysis
+    #fa= decomposition.FactorAnalysis()
+    # Reduced the dimension of training dataset using PCA
+    train_reduced = pca.fit_transform(train)
+     
+    #Reduced the dimension of test dataset
+    test_reduced = pca.transform(test)
+    ```
+
 - Gradient Boost 和 Adaboost 算法
 
 **Reference**
+- [common-machine-learning-algorithms](https://www.analyticsvidhya.com/blog/2015/08/common-machine-learning-algorithms/)
 - [10 种机器学习算法的要点](http://blog.jobbole.com/92021/)
 - [complete-tutorial-tree-based-modeling-scratch-in-python](https://www.analyticsvidhya.com/blog/2016/04/complete-tutorial-tree-based-modeling-scratch-in-python/)
 - [support-vector-machine-simplified](https://www.analyticsvidhya.com/blog/2014/10/support-vector-machine-simplified/)
