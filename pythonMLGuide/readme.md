@@ -289,10 +289,26 @@
     test_reduced = pca.transform(test)
     ```
 
-- Gradient Boost 和 Adaboost 算法
+- Boosting 算法
+    + boosting 算法是一种集成学习算法。它结合了建立在多个基础估计值基础上的预测结果，来增进单个估计值的可靠程度。
+    + GBDT (Gradient Boosting Decision Tree)，这些 boosting 算法通常在数据科学比赛如 Kaggl、AV Hackathon、CrowdAnalytix 中很有效。
+    + Tuning the right paras for boosting algorthm is not easy.
+
+    ```python
+    #Import Library
+    from sklearn.ensemble import GradientBoostingClassifier 
+    #Assumed you have, X (predictor) and Y (target) for training data set and x_test(predictor) of test_dataset
+    # Create Gradient Boosting Classifier object
+    model= GradientBoostingClassifier(n_estimators=100, learning_rate=1.0, max_depth=1, random_state=0)  
+    # Train the model using the training sets and check score
+    model.fit(X, y)
+    #Predict Output
+    predicted= model.predict(x_test)
+    ```
 
 **Reference**
 - [common-machine-learning-algorithms](https://www.analyticsvidhya.com/blog/2015/08/common-machine-learning-algorithms/)
 - [10 种机器学习算法的要点](http://blog.jobbole.com/92021/)
 - [complete-tutorial-tree-based-modeling-scratch-in-python](https://www.analyticsvidhya.com/blog/2016/04/complete-tutorial-tree-based-modeling-scratch-in-python/)
 - [support-vector-machine-simplified](https://www.analyticsvidhya.com/blog/2014/10/support-vector-machine-simplified/)
+- [boosting-algorithms-simplified](https://www.analyticsvidhya.com/blog/2015/05/boosting-algorithms-simplified/)
