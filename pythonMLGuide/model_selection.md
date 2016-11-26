@@ -45,3 +45,23 @@
         * cost matrix
         * cost curve
     + hypothesis test
+        * h0, null hypothesis
+        * ha, alternative hypothesis
+        * level of confidence
+        * level of significance
+        * binomial test
+        * t-test
+        * paired t-test
+        * 5*2 cross validation (5 time 2 fold)
+        * McNemar test (for binary classification)
+        * Friedman test
+        * Nemenyi post-hoc test
+
+## bias and variance
+- bias-variance decomposition
+    + generalization error can decompose into bias, variance and noise
+    + bias reveals the capability of fitting data
+    + variance reveals the effect from fluctuation of data
+    + noise reveals the difficulty of the problem trying to solve
+    + lack of training data results in poor fitting capability, and fluctuation of data cannot cause big difference, bias is the dominant factor of generalization error
+    + increase of training data powers fitting capability and learner can mis-learn the pattern from fluctuation of data, variance becomes the dominant factor.
