@@ -65,3 +65,7 @@
     + noise reveals the difficulty of the problem trying to solve
     + lack of training data results in poor fitting capability, and fluctuation of data cannot cause big difference, bias is the dominant factor of generalization error
     + increase of training data powers fitting capability and learner can mis-learn the pattern from fluctuation of data, variance becomes the dominant factor.
+
+## normalization
+- min-max normalization
+- z-score normalization ( ~ Norm(0, 1))
