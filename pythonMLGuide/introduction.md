@@ -36,7 +36,7 @@
 - induction: generalization
 - deduction: specialization
 - concept learning
-- version space
+- [version space](http://www2.cs.uregina.ca/~dbd/cs831/notes/ml/vspace/3_vspace.html), is a hierarchical representation of knowledge that enables you to keep track of all the useful information supplied by a sequence of learning examples without remembering any of the examples.
 - inductive bias
     + Occam's razor
 - NFL Theorem, No Free Lunch Theorem
