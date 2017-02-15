@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>chord diagram</title>
+    <style>
+        #circle circle {
+          fill: none;
+          pointer-events: all;
+        }
+        .group path {
+          fill-opacity: .5;
+        }
+        path.chord {
+          stroke: #000;
+          stroke-width: .25px;
+        }
+        #circle:hover path.fade {
+          display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+<h1>Chord diagram of overlapping APs</h1>
+<p>Note: Hover over to see the details</p>
+<p>9000 is the area id of G/F, 9001 for 1/F, etc.</p>
+<p>Name with prefix 'ref' stands for old reference data (Sept 2016), 'newref' stands for new reference (Jan 2017), and 'tar' stands for target data.</p>
+<h2>Old references VS targets</h2>
+<p>tar9000 consists of 1620 signal vectors, the accuracy of floor detection using SVM is ~98.46%.</p>
+<p>tar9002 consists of 7140 signal vectors, the accuracy of floor detection using SVM is ~98.00%.</p>
+<p>tar9003 consists of 4860 signal vectors, the accuracy of floor detection using SVM is ~63.90%.</p>
+<p>tar9004 consists of 540 signal vectors, the accuracy of floor detection using SVM is 0%.</p>
+<h2>New references VS targets</h2>
+<p>tar9000 consists of 1620 signal vectors, the accuracy of floor detection using SVM is ~99.94%.</p>
+<p>tar9002 consists of 7140 signal vectors, the accuracy of floor detection using SVM is ~97.18%.</p>
+<p>tar9003 consists of 4860 signal vectors, the accuracy of floor detection using SVM is ~98.89%.</p>
+<p>tar9004 consists of 540 signal vectors, the accuracy of floor detection using SVM is ~95.93%.</p>
+<h2>Table of basic Aps stats</h2>
+<table class="table table-striped text-center">
+    <tr>
+        <td><br></td>
+        <td><strong>old ref</strong></td>
+        <td><strong>new ref</strong></td>
+        <td><strong>overlapped</strong></td>
+    </tr>
+    <tr>
+        <td><strong>9000</strong></td>
+        <td>4087</td>
+        <td>4438</td>
+        <td>1694</td>
+    </tr>
+    <tr>
+        <td><strong>9001</strong></td>
+        <td>720</td>
+        <td>569</td>
+        <td>331</td>
+    </tr>
+    <tr>
+        <td><strong>9002</strong></td>
+        <td>3193</td>
+        <td>3316</td>
+        <td>1250</td>
+    </tr>
+    <tr>
+        <td><strong>9003</strong></td>
+        <td>2640</td>
+        <td>2887</td>
+        <td>1092</td>
+    </tr>
+    <tr>
+        <td><strong>9004</strong></td>
+        <td>833</td>
+        <td>912</td>
+        <td>445</td>
+    </tr>
+    <tr>
+        <td><strong>Total</strong></td>
+        <td>7540</td>
+        <td>7083</td>
+        <td>3070</td>
+    </tr>
+</table>
+<h2>Table of mutual overlapping stats</h2>
+<table class="table table-striped text-center">
+    <tr>
+        <td><br></td>
+        <td><strong>newref9000</strong></td>
+        <td><strong>newref9001</strong></td>
+        <td><strong>newref9002</strong></td>
+        <td><strong>newref9003</strong></td>
+        <td><strong>newref9004</strong></td>
+        <td><strong>ref9000</strong></td>
+        <td><strong>ref9001</strong></td>
+        <td><strong>ref9002</strong></td>
+        <td><strong>ref9003</strong></td>
+        <td><strong>ref9004</strong></td>
+        <td><strong>tar9000</strong></td>
+        <td><strong>tar9002</strong></td>
+        <td><strong>tar9003</strong></td>
+        <td><strong>tar9004</strong></td>
+    </tr>
+    <tr>
+        <td><strong>newref9000</strong></td>
+        <td>4438</td>
+        <td>296</td>
+        <td>1698</td>
+        <td>1316</td>
+        <td>358</td>
+        <td>1694</td>
+        <td>263</td>
+        <td>657</td>
+        <td>463</td>
+        <td>173</td>
+        <td>278</td>
+        <td>655</td>
+        <td>313</td>
+        <td>91</td>
+    </tr>
+    <tr>
+        <td><strong>newref9001</strong></td>
+        <td>296</td>
+        <td>569</td>
+        <td>403</td>
+        <td>261</td>
+        <td>173</td>
+        <td>135</td>
+        <td>331</td>
+        <td>261</td>
+        <td>170</td>
+        <td>141</td>
+        <td>8</td>
+        <td>19</td>
+        <td>9</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td><strong>newref9002</strong></td>
+        <td>1698</td>
+        <td>403</td>
+        <td>3316</td>
+        <td>1876</td>
+        <td>477</td>
+        <td>714</td>
+        <td>321</td>
+        <td>1250</td>
+        <td>837</td>
+        <td>285</td>
+        <td>254</td>
+        <td>862</td>
+        <td>441</td>
+        <td>89</td>
+    </tr>
+    <tr>
+        <td><strong>newref9003</strong></td>
+        <td>1316</td>
+        <td>261</td>
+        <td>1876</td>
+        <td>2887</td>
+        <td>550</td>
+        <td>479</td>
+        <td>232</td>
+        <td>866</td>
+        <td>1092</td>
+        <td>330</td>
+        <td>196</td>
+        <td>721</td>
+        <td>520</td>
+        <td>98</td>
+    </tr>
+    <tr>
+        <td><strong>newref9004</strong></td>
+        <td>358</td>
+        <td>173</td>
+        <td>477</td>
+        <td>550</td>
+        <td>912</td>
+        <td>203</td>
+        <td>188</td>
+        <td>301</td>
+        <td>364</td>
+        <td>445</td>
+        <td>5</td>
+        <td>120</td>
+        <td>125</td>
+        <td>91</td>
+    </tr>
+    <tr>
+        <td><strong>ref9000</strong></td>
+        <td>1694</td>
+        <td>135</td>
+        <td>714</td>
+        <td>479</td>
+        <td>203</td>
+        <td>4087</td>
+        <td>254</td>
+        <td>1007</td>
+        <td>751</td>
+        <td>186</td>
+        <td>121</td>
+        <td>247</td>
+        <td>124</td>
+        <td>30</td>
+    </tr>
+    <tr>
+        <td><strong>ref9001</strong></td>
+        <td>263</td>
+        <td>331</td>
+        <td>321</td>
+        <td>232</td>
+        <td>188</td>
+        <td>254</td>
+        <td>720</td>
+        <td>386</td>
+        <td>263</td>
+        <td>250</td>
+        <td>8</td>
+        <td>10</td>
+        <td>8</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td><strong>ref9002</strong></td>
+        <td>657</td>
+        <td>261</td>
+        <td>1250</td>
+        <td>866</td>
+        <td>301</td>
+        <td>1007</td>
+        <td>386</td>
+        <td>3193</td>
+        <td>1678</td>
+        <td>351</td>
+        <td>95</td>
+        <td>338</td>
+        <td>200</td>
+        <td>27</td>
+    </tr>
+    <tr>
+        <td><strong>ref9003</strong></td>
+        <td>463</td>
+        <td>170</td>
+        <td>837</td>
+        <td>1092</td>
+        <td>364</td>
+        <td>751</td>
+        <td>263</td>
+        <td>1678</td>
+        <td>2640</td>
+        <td>397</td>
+        <td>61</td>
+        <td>270</td>
+        <td>227</td>
+        <td>33</td>
+    </tr>
+    <tr>
+        <td><strong>ref9004</strong></td>
+        <td>173</td>
+        <td>141</td>
+        <td>285</td>
+        <td>330</td>
+        <td>445</td>
+        <td>186</td>
+        <td>250</td>
+        <td>351</td>
+        <td>397</td>
+        <td>833</td>
+        <td>0</td>
+        <td>5</td>
+        <td>8</td>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td><strong>tar9000</strong></td>
+        <td>278</td>
+        <td>8</td>
+        <td>254</td>
+        <td>196</td>
+        <td>5</td>
+        <td>121</td>
+        <td>8</td>
+        <td>95</td>
+        <td>61</td>
+        <td>0</td>
+        <td>359</td>
+        <td>249</td>
+        <td>20</td>
+        <td>4</td>
+    </tr>
+    <tr>
+        <td><strong>tar9002</strong></td>
+        <td>655</td>
+        <td>19</td>
+        <td>862</td>
+        <td>721</td>
+        <td>120</td>
+        <td>247</td>
+        <td>10</td>
+        <td>338</td>
+        <td>270</td>
+        <td>5</td>
+        <td>249</td>
+        <td>1312</td>
+        <td>392</td>
+        <td>103</td>
+    </tr>
+    <tr>
+        <td><strong>tar9003</strong></td>
+        <td>313</td>
+        <td>9</td>
+        <td>441</td>
+        <td>520</td>
+        <td>125</td>
+        <td>124</td>
+        <td>8</td>
+        <td>200</td>
+        <td>227</td>
+        <td>8</td>
+        <td>20</td>
+        <td>392</td>
+        <td>845</td>
+        <td>101</td>
+    </tr>
+    <tr>
+        <td><strong>tar9004</strong></td>
+        <td>91</td>
+        <td>0</td>
+        <td>89</td>
+        <td>98</td>
+        <td>91</td>
+        <td>30</td>
+        <td>0</td>
+        <td>27</td>
+        <td>33</td>
+        <td>0</td>
+        <td>4</td>
+        <td>103</td>
+        <td>101</td>
+        <td>159</td>
+    </tr>
+</table>
+<h2>Chord diagram</h2>
+</body>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+    var width = 700,
+        height = 700,
+        outerRadius = Math.min(width, height) / 2 - 10,
+        innerRadius = outerRadius - 24;
+
+    var names = ["newref9000", "newref9001", "newref9002", "newref9003", "newref9004", "ref9000", "ref9001", "ref9002", "ref9003", "ref9004", "tar9000", "tar9002", "tar9003", "tar9004"];
+    var mat = [[4438, 296, 1698, 1316, 358, 1694, 263, 657, 463, 173, 278, 655, 313, 91], [296, 569, 403, 261, 173, 135, 331, 261, 170, 141, 8, 19, 9, 0], [1698, 403, 3316, 1876, 477, 714, 321, 1250, 837, 285, 254, 862, 441, 89], [1316, 261, 1876, 2887, 550, 479, 232, 866, 1092, 330, 196, 721, 520, 98], [358, 173, 477, 550, 912, 203, 188, 301, 364, 445, 5, 120, 125, 91], [1694, 135, 714, 479, 203, 4087, 254, 1007, 751, 186, 121, 247, 124, 30], [263, 331, 321, 232, 188, 254, 720, 386, 263, 250, 8, 10, 8, 0], [657, 261, 1250, 866, 301, 1007, 386, 3193, 1678, 351, 95, 338, 200, 27], [463, 170, 837, 1092, 364, 751, 263, 1678, 2640, 397, 61, 270, 227, 33], [173, 141, 285, 330, 445, 186, 250, 351, 397, 833, 0, 5, 8, 0], [278, 8, 254, 196, 5, 121, 8, 95, 61, 0, 359, 249, 20, 4], [655, 19, 862, 721, 120, 247, 10, 338, 270, 5, 249, 1312, 392, 103], [313, 9, 441, 520, 125, 124, 8, 200, 227, 8, 20, 392, 845, 101], [91, 0, 89, 98, 91, 30, 0, 27, 33, 0, 4, 103, 101, 159]];
+
+    var arc = d3.svg.arc()
+    .innerRadius(innerRadius)
+    .outerRadius(outerRadius);
+
+    var layout = d3.layout.chord()
+        .padding(.04)
+        .sortSubgroups(d3.descending)
+        .sortChords(d3.ascending);
+
+    var path = d3.svg.chord()
+        .radius(innerRadius);
+
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+      .append("g")
+        .attr("id", "circle")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    svg.append("circle")
+        .attr("r", outerRadius);
+
+    // Compute the chord layout.
+      layout.matrix(mat);
+
+      // Add a group per neighborhood.
+      var group = svg.selectAll(".group")
+          .data(layout.groups)
+        .enter().append("g")
+          .attr("class", "group")
+          .on("mouseover", mouseover);
+
+      // Add a mouseover title.
+      group.append("title").text(function(d, i) {
+//        return names[i] + ": " + d.value;
+        return names[i];
+      });
+
+      var color10 = d3.scale.category10();
+
+      // Add the group arc.
+      var groupPath = group.append("path")
+          .attr("id", function(d, i) { return "group" + i; })
+          .attr("d", arc)
+          .style("fill", function(d, i) { return color10(i); });
+
+      // Add a text label.
+      var groupText = group.append("text")
+          .attr("x", 6)
+          .attr("dy", 15);
+
+      groupText.append("textPath")
+          .attr("xlink:href", function(d, i) { return "#group" + i; })
+          .text(function(d, i) { return names[i]; });
+
+      // Remove the labels that don't fit. :(
+      groupText.filter(function(d, i) { return groupPath[0][i].getTotalLength() / 2 - 16 < this.getComputedTextLength(); })
+          .remove();
+
+      // Add the chords.
+      var chord = svg.selectAll(".chord")
+          .data(layout.chords)
+        .enter().append("path")
+          .attr("class", "chord")
+          .style("fill", function(d, i) { return color10(d.source.index); })
+          .attr("d", path);
+
+      // Add an elaborate mouseover title for each chord.
+      chord.append("title").text(function(d) {
+        return names[d.source.index]
+            + " → " + names[d.target.index]
+            + ": " + d.source.value + " macs overlapped";
+//            + "\n" + names[d.target.index]
+//            + " → " + names[d.source.index]
+//            + ": " + d.target.value + " macs overlapped";
+      });
+
+      function mouseover(d, i) {
+        chord.classed("fade", function(p) {
+          return p.source.index != i
+              && p.target.index != i;
+        });
+      }
+</script>
+</html>
