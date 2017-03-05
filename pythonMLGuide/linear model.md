@@ -5,8 +5,17 @@
 - Good comprehensibility, the importance level of features show clealy by w.
 - Nonlinear models can be derived by the linear models.
 - Linear regression
+    + minimize the square errors
+        * probabilistic interpretation
+        * maximum likelihood
     + euclidean distance
     + least square method
+        * batch gradient descent
+            - time-consuming, each update requires full scan of training set
+        * stochastic gradient descent (incremental gradient descent)
+            - efficient, only one full scan of training set is requred
+    + The normal equations
+        * used to find the closed-form solution
     + parameter estimation
     + multivariate linear regression
 - Log-linear regression
