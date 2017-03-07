@@ -58,3 +58,7 @@
         * SMOTE
     + threshold-moving
         * rescaling
+
+![img](./pics/notes_LR.jpg)
+
+![img](./pics/notes_LR2.jpg)
