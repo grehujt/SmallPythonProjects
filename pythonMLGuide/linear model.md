@@ -66,3 +66,8 @@
 ![img](./pics/notes_LR3.jpg)
 
 ![img](./pics/notes_LR4.jpg)
+
+![img](./pics/notes_LR5.jpg)
+
+![img](./pics/notes_LR6.jpg)
+
