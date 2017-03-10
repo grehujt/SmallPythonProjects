@@ -71,3 +71,5 @@
 
 ![img](./pics/notes_LR6.jpg)
 
+![img](./pics/notes_LR7.jpg)
+
