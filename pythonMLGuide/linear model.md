@@ -63,27 +63,31 @@ Notes:
 
 - Probabilistic interpretation of the cost function using in linear regression
 - logistic regression, maximum likelihood, gradient ascent
-    [img](./pics/notes_LR.jpg)
+    + [img](./pics/notes_LR.jpg)
 
 - (cont) logistic regression, maximum likelihood, gradient ascent
-    [img](./pics/notes_LR2.jpg)
+    + [img](./pics/notes_LR2.jpg)
 
 - perceptron, logistic regression, newton's method, gaussian, bernoulli, exponential family
-    [img](./pics/notes_LR3.jpg)
+    + [img](./pics/notes_LR3.jpg)
 
 - proofs of bernoulli and gaussian are in exponential family
-    [img](./pics/notes_LR4.jpg)
+    + [img](./pics/notes_LR4.jpg)
 
 - generalized linear model
-    [img](./pics/notes_LR5.jpg)
+    + [img](./pics/notes_LR5.jpg)
 
 - softmax regression, a generalization of logistic regression;
 - proof of multinomial is in exponential family
-    [img](./pics/notes_LR6.jpg)
-    [img](./pics/notes_LR7.jpg)
+    + [img](./pics/notes_LR6.jpg)
+    + [img](./pics/notes_LR7.jpg)
 
 - Discriminative learning algorithm vs generative learning algorithm
 - An example of generative learning algorithm: **Gaussian Discriminant Analysis**
 - Gaussian Discriminant Analysis vs logistic regression
-    [img](./pics/notes_LR8.jpg)
-    [img](./pics/notes_LR9.jpg)
+    + [img](./pics/notes_LR8.jpg)
+    + [img](./pics/notes_LR9.jpg)
+
+- Another example of generative learning algorithm: **Naive Bayes**
+- Laplace smoothing
+    + [img](pics/notes_LR10.jpg)
