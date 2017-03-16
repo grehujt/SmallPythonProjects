@@ -91,3 +91,10 @@ Notes:
 - Another example of generative learning algorithm: **Naive Bayes**
 - Laplace smoothing
     + [img](pics/notes_LR10.jpg)
+
+- Naive Bayes with multinomial event model
+- short introduction of nonlinear clf: neural network
+- SVM, functional margin, geometric margin, max margin clf
+    + [img](pics/notes_LR11.jpg)
+    + [img](pics/notes_LR12.jpg)
+
