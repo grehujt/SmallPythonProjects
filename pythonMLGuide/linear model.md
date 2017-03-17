@@ -98,3 +98,8 @@ Notes:
     + [img](pics/notes_LR11.jpg)
     + [img](pics/notes_LR12.jpg)
 
+- Lagrange multipliers
+- convex optimization, max marain clf primal/dual problem, KKT condition
+- kernels
+    + [img](pics/notes_LR13.jpg)
+    + [img](pics/notes_LR14.jpg)
