@@ -103,3 +103,9 @@ Notes:
 - kernels
     + [img](pics/notes_LR13.jpg)
     + [img](pics/notes_LR14.jpg)
+    + [img](pics/notes_LR15.jpg)
+
+- valid kernels, gaussian kernel, polynomial kernel
+- L1 norm soft margin SVM
+- coordinate ascent, SMO
+    + [img](pics/notes_LR16.jpg)
