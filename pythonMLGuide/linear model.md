@@ -109,3 +109,9 @@ Notes:
 - L1 norm soft margin SVM
 - coordinate ascent, SMO
     + [img](pics/notes_LR16.jpg)
+
+- Learning Theory, Empirical risk minimization
+- union bound, Hoeffding inequality
+- uniform convergence, sample complexity bound, error bound
+    + [img](pics/notes_LR17.jpg)
+    + [img](pics/notes_LR18.jpg)
