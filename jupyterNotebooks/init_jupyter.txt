@@ -1,0 +1,17 @@
+```sh
+$ vi .bash_profile add:
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+$ vi ~/.matplotlib/matplotlibrc add:
+image.cmap : gray
+image.interpolation : none
+
+$ jupyter notebook
+%matplotlib inline
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+plt.style.use('ggplot')
+print plt.style.available
+```
