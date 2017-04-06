@@ -58,3 +58,7 @@ import scipy.stats as st
     + sel = ~rates['dfe'].isnull() * rates['dfe'] > 23.5
     + LinearRegression().fit(x, y)
     + plt.plot(xx, model.predict(xx), '--', lw=3)
+    + plt.scatter(rates[sel]['gdp']/1000, rates[sel]['dfe'], s=rates[sel]['both']**1.5)
+    + ax.plot_surface(xx, yy, z2, cmap=plt.cm.RdBu, alpha=0.6, linewidth=0)
+    + model = LogisticRegression().fit(...)
+    + model.decision_function(...)
