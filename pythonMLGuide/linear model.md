@@ -115,3 +115,6 @@ Notes:
 - uniform convergence, sample complexity bound, error bound
     + [img](pics/notes_LR17.jpg)
     + [img](pics/notes_LR18.jpg)
+
+- VC dimension
+    + [img](pics/notes_LR19.jpg)
