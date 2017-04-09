@@ -118,3 +118,16 @@ Notes:
 
 - VC dimension
     + [img](pics/notes_LR19.jpg)
+
+- model selection
+    + hold-out cross validation
+    + k-fold cross validation
+    + leave-one-out cross validation
+- feature selection
+    + wrapper method
+        * forward search
+        * backwad search
+    + filter method
+        * corr/mutal info/KL divergence
+
+[img](pics/notes_LR20.jpg)
