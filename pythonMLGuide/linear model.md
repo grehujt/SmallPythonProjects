@@ -131,3 +131,19 @@ Notes:
         * corr/mutal info/KL divergence
 
 [img](pics/notes_LR20.jpg)
+
+- Avoid overfitting: Bayssian regularization
+    + frequentist point of view
+    + Bayssian point of view
+
+[img](pics/notes_LR21.jpg)
+
+- debug learning algorithm
+    + bias
+    + variance
+    + optimization algorithm
+    + optimization objective
+- Error analysis
+- Ablative analysis
+
+[img](pics/notes_LR22.jpg)
