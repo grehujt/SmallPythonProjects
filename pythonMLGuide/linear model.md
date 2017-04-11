@@ -132,9 +132,9 @@ Notes:
 
 [img](pics/notes_LR20.jpg)
 
-- Avoid overfitting: Bayssian regularization
+- Avoid overfitting: Bayesian regularization
     + frequentist point of view
-    + Bayssian point of view
+    + Bayesian point of view
 
 [img](pics/notes_LR21.jpg)
 
@@ -147,3 +147,9 @@ Notes:
 - Ablative analysis
 
 [img](pics/notes_LR22.jpg)
+
+- K-means clustering
+- Expectation maximization algo
+- generalizaed EM algo
+
+[img](pics/notes_LR23.jpg)
