@@ -156,8 +156,12 @@ Notes:
     + mixture of Naive Bayes
     + Factor analysis
 - PCA
+- Latent senmatic indexing
+- Singular value decomposition
+- Independent component analysis
 
 [img](pics/notes_LR23.jpg)
 [img](pics/notes_LR24.jpg)
 [img](pics/notes_LR25.jpg)
 [img](pics/notes_LR26.jpg)
+[img](pics/notes_LR27.jpg)
