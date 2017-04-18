@@ -150,13 +150,13 @@ Notes:
 
 - K-means clustering
 - Expectation maximization algo
-- generalizaed EM algo
+- generalized EM algo
 - Density estimation
     + mixture of Gaussian
     + mixture of Naive Bayes
     + Factor analysis
 - PCA
-- Latent senmatic indexing
+- Latent semantic indexing
 - Singular value decomposition
 - Independent component analysis
 
@@ -165,3 +165,8 @@ Notes:
 [img](pics/notes_LR25.jpg)
 [img](pics/notes_LR26.jpg)
 [img](pics/notes_LR27.jpg)
+
+- Reinforcement learning
+    + Markov decision process
+
+[img](pics/notes_LR28.jpg)
