@@ -168,5 +168,11 @@ Notes:
 
 - Reinforcement learning
     + Markov decision process
+    + value iteration
+    + policy iteration
+    + continuous state MDP
+    + curse of dimension
+    + fitted value iteration
 
 [img](pics/notes_LR28.jpg)
+[img](pics/notes_LR29.jpg)
