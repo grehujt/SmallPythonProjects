@@ -3,3 +3,5 @@ jupyterNotebooks/movieRating/dataset
 .ipynb*
 *csv
 *dta
+*mat
+*png
