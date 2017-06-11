@@ -1,17 +1,17 @@
 # Regression
 
 ## Linear Regression
-- Linear regression, or ordinary least squares (OLS), is the simplest and most classic lin‐ ear method for regression.
-- finds the parameters w and b that mini‐ mize the mean squared error between predictions and the true regression targets, y, on the training set.
+- Linear regression, or ordinary least squares (OLS), is the simplest and most classic linear method for regression.
+- finds the parameters w and b that minimize the mean squared error between predictions and the true regression targets, y, on the training set.
 - has no parameters, which is a benefit, but it also has no way to control model complexity.
 
 ## Ridge Regression (L2 regularization)
-- wants the magnitude of coef‐ ficients to be as small as possible; in other words, all entries of w should be close to zero.
-- Regularization means explicitly restricting a model to avoid overfitting. The particular kind used by ridge regres‐ sion is known as L2 regularization.
+- wants the magnitude of coefficients to be as small as possible; in other words, all entries of w should be close to zero.
+- Regularization means explicitly restricting a model to avoid overfitting. The particular kind used by ridge regression is known as L2 regularization.
 - How much importance the model places on simplicity versus training set performance can be specified by the user, using the alpha parameter.
 - ridge is regularized, the training score of ridge is lower than the training score for linear regression.
 - test score for ridge is better, particularly for small subsets of the data
-- with enough train‐ ing data, regularization becomes less important, and given enough data, ridge and linear regression will have the same performance.
+- with enough training data, regularization becomes less important, and given enough data, ridge and linear regression will have the same performance.
 
 ## Lasso (L1 regularization)
 - The consequence of L1 regularization is that when using the lasso, some coefficients are exactly zero. This can be seen as a form of __automatic fea‐ ture selection__.
