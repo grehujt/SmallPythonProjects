@@ -24,3 +24,18 @@
     + complete, complete linkage (also known as maximum linkage) merges the two clusters that have the smallest maximum distance between their points.
 - If the clusters have very dissimilar numbers of members, average or complete might work better.
 - SciPy provides a function that takes a data array X and computes a linkage array, which encodes hierarchical cluster similarities. We can then feed this linkage array into the scipy __dendrogram__ function to plot the dendrogram.
+
+## DBSCAN (density-based spatial clustering of applications with noise)
+- can capture clusters of complex shapes, and it can identify points that are not part of any cluster.
+- DBSCAN is somewhat slower than agglomerative clustering and k-means, but still scales to relatively large datasets.
+- There are two parameters in DBSCAN: __min_samples__ and __eps__, at least min_samples many data points within a distance of eps to a given data point, that data point is classified as a core sample.
+- Finding a good setting for eps is sometimes easier after __scaling__ the data using StandardScaler or MinMaxScaler, as using these scaling techniques will ensure that all features have similar ranges.
+
+## Comparing and Evaluating Clustering Algorithms
+- sklearn.metrics.cluster
+- Evaluating clustering with ground truth
+    + adjusted rand index (ARI)
+    + normalized mutual information (NMI)
+- Evaluating clustering without ground truth
+    + silhouette coeffcient, computes the compactness of a cluster, where higher is better, with a perfect score of 1. While compact clusters are good, compactness doesn’t allow for complex shapes.
+    + robustness-based clustering metrics, run an algorithm after adding some noise to the data, or using different parameter settings, and compare the outcomes.
