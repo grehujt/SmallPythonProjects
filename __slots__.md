@@ -1,4 +1,4 @@
-# Python \_\_slot\_\_
+# Python \_\_slots\_\_
 
 The special attribute __\_\_slots\_\___ allows you to explicitly state which instance attributes you expect your object instances to have, with the expected results:
 - __faster attribute access.__
