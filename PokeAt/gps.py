@@ -1,6 +1,7 @@
 
 import os
 import json
+import time
 import datetime
 import random
 import re
@@ -16,45 +17,8 @@ content = '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 </gpx>
 '''
 
-
-def parse_time(s):
-    year = int(s[:4])
-    month = int(s[5:7])
-    day = int(s[8:10])
-    hour = int(s[11:13])
-    minute = int(s[14:16])
-    second = int(s[17:19])
-    return datetime.datetime(year, month, day, hour, minute, second)
-
-
-def make_time(d):
-    return '%4d-%02d-%02dT%02d:%02d:%02dZ' % tuple(x for x in d.timetuple())[:-3]
-
-
-def update_gpx(gpx, lat, lng, ts):
-    # print 'update gpx file', lat, lng, ts
-    n = random.randint(0, 2 << 20)
-    dt = datetime.timedelta(seconds=random.randint(0, 9))
-    ts = make_time(parse_time(ts) + dt)
-    with open(gpx, 'wb') as fout:
-        fout.write(content % (lat, lng, n, ts))
-    return ts
-
-
-def update_xcode(seq):
-    # pyautogui.moveTo(x1, y1)
-    # pyautogui.click(x1, y1)
-    # pyautogui.moveTo(x2, y2)
-    # pyautogui.click(x2, y2)
-    for i in range(0, len(seq), 2):
-        # print seq[i], seq[i+1]
-        # pyautogui.moveTo(seq[i], seq[i+1])
-        pyautogui.click(seq[i], seq[i+1])
-
-
 conf = json.loads(open('gps_conf.json').read())
 gpx = conf['gpx_file']
-ts = conf['ts']
 last_lat = float(conf['last_lat'])
 last_lng = float(conf['last_lng'])
 speed1 = float(conf['speed1'])
@@ -62,69 +26,74 @@ speed2 = float(conf['speed2'])
 click_locs = conf['click_locs']
 
 
-if not os.path.exists(gpx):
-    print 'no gpx file found, init one'
-    ts = update_gpx(gpx, last_lat, last_lng, ts)
-    print 'done init gpx file'
-else:
-    print 'found gpx file, load last records'
-    gpx_content = open(gpx).read()
-    last_lat = float(re.findall(r'lat="(.*?)"', gpx_content)[-1])
-    last_lng = float(re.findall(r'lon="(.*?)"', gpx_content)[-1])
-    ts = re.findall(r'<time>(.*?)</time>', gpx_content)[-1]
-    print last_lat, last_lng, ts
+def _make_time():
+    d = datetime.datetime.now()
+    return '%4d-%02d-%02dT%02d:%02d:%02dZ' % tuple(x for x in d.timetuple())[:-3]
+
+
+def _update_gpx(gpx, lat, lng):
+    # print 'update gpx file', lat, lng
+    n = random.randint(0, 2 << 20)
+    lng = round(lng, 7)
+    lat = round(lat, 7)
+    with open(gpx, 'wb') as fout:
+        fout.write(content % (lat, lng, n, _make_time()))
+
+
+def _update_xcode(seq):
+    for i in range(0, len(seq), 2):
+        pyautogui.click(seq[i], seq[i+1])
+
+
+def update(c):
+    global last_lat, last_lng
+    r1 = random.random() * 0.1 * speed1
+    r2 = random.random() * 0.1 * speed1
+    if c == 'j' or c == 'J':
+        last_lng -= speed1+r1 if c == 'j' else speed2+r1
+        last_lat -= r2
+    elif c == 'l' or c == 'L':
+        last_lng += speed1+r1 if c == 'l' else speed2+r1
+        last_lat += r2
+    elif c == 'i' or c == 'I':
+        last_lat += speed1+r1 if c == 'i' else speed2+r1
+        last_lng += r2
+    elif c == 'k' or c == 'K':
+        last_lat -= speed1+r1 if c == 'k' else speed2+r1
+        last_lng -= r2
+    print c, last_lat, last_lng
+    _update_gpx(gpx, last_lat, last_lng)
+    _update_xcode(click_locs)
 
 
 def key(event):
-    global last_lat, last_lng, ts
     c = event.char
-
-    if c == 'j' or c == 'J':
-        r1 = random.random() * 0.01 * speed1
-        r2 = random.random() * 0.01 * speed1
-        last_lng -= speed1+r1 if c == 'j' else speed2+r1
-        last_lat -= r2
-        last_lng = round(last_lng, 7)
-        last_lat = round(last_lat, 7)
-        ts = update_gpx(gpx, last_lat, last_lng, ts)
-        print 'left:\t', last_lat, last_lng, ts
-        update_xcode(click_locs)
-    elif c == 'l' or c == 'L':
-        r1 = random.random() * 0.01 * speed1
-        r2 = random.random() * 0.01 * speed1
-        last_lng += speed1+r1 if c == 'l' else speed2+r1
-        last_lat += r2
-        last_lng = round(last_lng, 7)
-        last_lat = round(last_lat, 7)
-        ts = update_gpx(gpx, last_lat, last_lng, ts)
-        print 'right:\t', last_lat, last_lng, ts
-        update_xcode(click_locs)
-    elif c == 'i' or c == 'I':
-        r1 = random.random() * 0.01 * speed1
-        r2 = random.random() * 0.01 * speed1
-        last_lat += speed1+r1 if c == 'i' else speed2+r1
-        last_lng += r2
-        last_lng = round(last_lng, 7)
-        last_lat = round(last_lat, 7)
-        ts = update_gpx(gpx, last_lat, last_lng, ts)
-        print '  up:\t', last_lat, last_lng, ts
-        update_xcode(click_locs)
-    elif c == 'k' or c == 'K':
-        r1 = random.random() * 0.01 * speed1
-        r2 = random.random() * 0.01 * speed1
-        last_lat -= speed1+r1 if c == 'k' else speed2+r1
-        last_lng -= r2
-        last_lng = round(last_lng, 7)
-        last_lat = round(last_lat, 7)
-        ts = update_gpx(gpx, last_lat, last_lng, ts)
-        print 'down:\t', last_lat, last_lng, ts
-        update_xcode(click_locs)
+    if c == 'r':
+        while True:
+            tmp = random.choice(['i', 'j', 'k', 'l'])
+            startT = datetime.datetime.now()
+            while (datetime.datetime.now() - startT).seconds < 30:
+                update(tmp)
+                time.sleep(3)
+    else:
+        update(c)
 
 
 def callback(event):
     frame.focus_set()
     # print "clicked at", event.x, event.y
 
+
+if not os.path.exists(gpx):
+    print 'no gpx file found, init one'
+    _update_gpx(gpx, last_lat, last_lng)
+    print 'done init gpx file'
+else:
+    print 'found gpx file, load last records'
+    gpx_content = open(gpx).read()
+    last_lat = float(re.findall(r'lat="(.*?)"', gpx_content)[-1])
+    last_lng = float(re.findall(r'lon="(.*?)"', gpx_content)[-1])
+    print last_lat, last_lng
 
 root = Tk()
 # frame = Frame(root, width=700, height=700)
